@@ -3,6 +3,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MembershipModule } from './membership/membership.module';
+import { WashHallModule } from './wash_hall/wash_hall.module';
+import { SelfWashHallModule } from './self_wash_hall/self_wash_hall.module';
+import { LocationModule } from './location/location.module';
+import { LoyaltyRewardTypeModule } from './loyalty_reward_type/loyalty_reward_type.module';
+import { LoyaltyRewardModule } from './loyalty_reward/loyalty_reward.module';
+import { CarModule } from './car/car.module';
+import { MembershipTypeModule } from './membership_type/membership_type.module';
+import { MembershipTypeModule } from './membership-type/membership-type.module';
+import { MembershipModule } from './membership/membership.module';
 
 @Module({
   imports: [
@@ -22,6 +32,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
       inject: [ConfigService],
     }),
+    MembershipModule,
+    MembershipTypeModule,
+    CarModule,
+    LoyaltyRewardModule,
+    LoyaltyRewardTypeModule,
+    LocationModule,
+    SelfWashHallModule,
+    WashHallModule,
   ],
   controllers: [AppController],
   providers: [AppService],
