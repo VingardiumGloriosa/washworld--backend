@@ -6,6 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
+
 @Entity('cars')
 export class Car {
   @PrimaryGeneratedColumn('increment')
