@@ -6,6 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Location } from 'src/location/entities/location.entity';
+
 @Entity('wash_halls')
 export class WashHall {
   @PrimaryGeneratedColumn('increment')
