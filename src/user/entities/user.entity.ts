@@ -1,3 +1,6 @@
+import { Car } from 'src/car/entities/car.entity';
+import { Loyalty_Reward } from 'src/loyalty_reward/entities/loyalty_reward.entity';
+import { Membership } from 'src/membership/entities/membership.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -6,9 +9,6 @@ import {
   JoinColumn,
   OneToMany,
 } from 'typeorm';
-import { Membership } from './membership.entity';
-import { Car } from './car.entity';
-import { LoyaltyReward } from './loyalty_reward.entity';
 
 @Entity('users')
 export class User {
@@ -34,6 +34,6 @@ export class User {
   @OneToMany(() => Car, (car) => car.user)
   cars: Car[];
 
-  @OneToMany(() => LoyaltyReward, (reward) => reward.user)
-  loyaltyRewards: LoyaltyReward[];
+  @OneToMany(() => Loyalty_Reward, (reward) => reward.user)
+  loyaltyRewards: Loyalty_Reward[];
 }

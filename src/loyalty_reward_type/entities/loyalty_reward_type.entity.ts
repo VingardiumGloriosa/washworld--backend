@@ -10,5 +10,5 @@ export class LoyaltyRewardType {
   name: string;
 
   @OneToMany(() => Loyalty_Reward, (reward) => reward.loyaltyRewardType)
-  rewards: LoyaltyReward[];
+  rewards: Loyalty_Reward[];
 }

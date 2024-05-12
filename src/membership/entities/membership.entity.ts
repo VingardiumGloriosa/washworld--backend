@@ -1,3 +1,5 @@
+import { Membership_Type } from 'src/membership_type/entities/membership_type.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -6,17 +8,15 @@ import {
   OneToMany,
   JoinColumn,
 } from 'typeorm';
-import { MembershipType } from './membership_type.entity';
-import { User } from './user.entity';
 
 @Entity('memberships')
 export class Membership {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @ManyToOne(() => MembershipType, (type) => type.memberships)
+  @ManyToOne(() => Membership_Type, (type) => type.memberships)
   @JoinColumn({ name: 'membership_type_id' })
-  membershipType: MembershipType;
+  membershipType: Membership_Type;
 
   @Column({ type: 'timestamp' })
   start_date: Date;

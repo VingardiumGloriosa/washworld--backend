@@ -11,8 +11,6 @@ import { LoyaltyRewardTypeModule } from './loyalty_reward_type/loyalty_reward_ty
 import { LoyaltyRewardModule } from './loyalty_reward/loyalty_reward.module';
 import { CarModule } from './car/car.module';
 import { MembershipTypeModule } from './membership_type/membership_type.module';
-import { MembershipTypeModule } from './membership-type/membership-type.module';
-import { MembershipModule } from './membership/membership.module';
 
 @Module({
   imports: [
