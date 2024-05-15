@@ -9,13 +9,16 @@ import { User } from 'src/user/entities/user.entity';
 
 @Entity('cars')
 export class Car {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.cars)
+  @ManyToOne(() => User, user => user.cars)
   @JoinColumn({ name: 'user_id' })
   user: User;
 
   @Column({ type: 'text' })
-  license_plate: string;
+  licensePlate: string;
+
+  @Column({ type: 'text' })
+  qrCodeUrl: string;
 }

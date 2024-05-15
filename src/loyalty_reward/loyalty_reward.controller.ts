@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { LoyaltyRewardService } from './loyalty_reward.service';
 import { CreateLoyaltyRewardDto } from './dto/create-loyalty_reward.dto';
-import { UpdateLoyaltyRewardDto } from './dto/update-loyalty_reward.dto';
+import { UpdateLoyaltyRewardDto } from './dto/update-loyalty_reward-status.dto';
 
 @Controller('loyalty-reward')
 export class LoyaltyRewardController {

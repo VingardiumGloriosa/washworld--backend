@@ -1,26 +1,27 @@
-import { Injectable } from '@nestjs/common';
-import { CreateLoyaltyRewardTypeDto } from './dto/create-loyalty_reward_type.dto';
-import { UpdateLoyaltyRewardTypeDto } from './dto/update-loyalty_reward_type.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { LoyaltyRewardType } from './entities/loyalty_reward_type.entity';
 
 @Injectable()
 export class LoyaltyRewardTypeService {
-  create(createLoyaltyRewardTypeDto: CreateLoyaltyRewardTypeDto) {
-    return 'This action adds a new loyaltyRewardType';
+  constructor(
+    @InjectRepository(LoyaltyRewardType)
+    private loyaltyRewardTypeRepository: Repository<LoyaltyRewardType>,
+  ) {}
+
+  async findAll(): Promise<LoyaltyRewardType[]> {
+    return await this.loyaltyRewardTypeRepository.find();
   }
 
-  findAll() {
-    return `This action returns all loyaltyRewardType`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} loyaltyRewardType`;
-  }
-
-  update(id: number, updateLoyaltyRewardTypeDto: UpdateLoyaltyRewardTypeDto) {
-    return `This action updates a #${id} loyaltyRewardType`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} loyaltyRewardType`;
+  async findOne(id: number): Promise<LoyaltyRewardType> {
+    const rewardType = await this.loyaltyRewardTypeRepository.findOne({
+      where: { id: id }
+    });
+    
+    if (!rewardType) {
+      throw new NotFoundException(`LoyaltyRewardType with ID ${id} not found.`);
+    }
+    return rewardType;
   }
 }

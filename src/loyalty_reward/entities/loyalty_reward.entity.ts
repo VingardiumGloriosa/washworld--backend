@@ -10,17 +10,15 @@ import { LoyaltyRewardType } from 'src/loyalty_reward_type/entities/loyalty_rewa
 
 @Entity('loyalty_rewards')
 export class Loyalty_Reward {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.loyaltyRewards)
-  @JoinColumn({ name: 'user_id' })
+  @ManyToOne(() => User, user => user.loyaltyRewards)
   user: User;
 
-  @Column({ type: 'text' })
-  status: string;
-
-  @ManyToOne(() => LoyaltyRewardType)
-  @JoinColumn({ name: 'loyalty_reward_type_id' })
+  @ManyToOne(() => LoyaltyRewardType, type => type.rewards)
   loyaltyRewardType: LoyaltyRewardType;
+
+  @Column({ default: true })
+  isActive: boolean;
 }
