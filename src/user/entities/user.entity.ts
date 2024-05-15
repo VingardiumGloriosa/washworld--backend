@@ -5,9 +5,9 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
   JoinColumn,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 
 @Entity('users')
@@ -25,9 +25,9 @@ export class User {
   password: string;
 
   @Column({ type: 'text' })
-  full_name: string;
+  fullName: string;
 
-  @ManyToOne(() => Membership, (membership) => membership.users)
+  @OneToOne(() => Membership)
   @JoinColumn({ name: 'membership_id' })
   membership: Membership;
 

@@ -1,32 +1,26 @@
-import { Membership_Type } from 'src/membership_type/entities/membership_type.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
+import { Membership_Type } from '../../membership_type/entities/membership_type.entity';
 import { User } from 'src/user/entities/user.entity';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  OneToMany,
-  JoinColumn,
-} from 'typeorm';
 
-@Entity('memberships')
+@Entity()
 export class Membership {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @ManyToOne(() => Membership_Type, (type) => type.memberships)
-  @JoinColumn({ name: 'membership_type_id' })
-  membershipType: Membership_Type;
+    @ManyToOne(() => Membership_Type, membershipType => membershipType.memberships)
+    @JoinColumn({ name: 'membership_type_id' })
+    membershipType: Membership_Type;
 
-  @Column({ type: 'timestamp' })
-  start_date: Date;
+    @Column()
+    start_date: Date;
 
-  @Column({ type: 'timestamp' })
-  end_date: Date;
+    @Column()
+    end_date: Date;
 
-  @Column({ type: 'text' })
-  status: string;
+    @Column()
+    status: string;
 
-  @OneToMany(() => User, (user) => user.membership)
-  users: User[];
+    @OneToOne(() => User)
+    @Column()
+    user: User;  // Assuming you're storing a reference to a user
 }

@@ -9,7 +9,7 @@ export class Membership_Type {
   @Column({ type: 'text' })
   name: string;
 
-  @Column({ type: 'numeric' })
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;
 
   @Column({ type: 'text' })
