@@ -1,4 +1,3 @@
-// src/wash-hall/wash-hall.controller.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { WashHallController } from './wash_hall.controller';
 import { WashHallService } from './wash_hall.service';
