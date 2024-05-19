@@ -13,10 +13,10 @@ export class Loyalty_Reward {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, user => user.loyaltyRewards)
+  @ManyToOne(() => User, (user) => user.loyaltyRewards)
   user: User;
 
-  @ManyToOne(() => LoyaltyRewardType, type => type.rewards)
+  @ManyToOne(() => LoyaltyRewardType, (type) => type.rewards)
   loyaltyRewardType: LoyaltyRewardType;
 
   @Column({ default: true })

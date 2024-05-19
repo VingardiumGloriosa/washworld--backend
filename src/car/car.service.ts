@@ -10,7 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class CarService {
   constructor(
     @InjectRepository(Car)
-    private carRepository: Repository<Car>
+    private carRepository: Repository<Car>,
   ) {}
 
   async create(createCarDto: CreateCarDto): Promise<Car> {
@@ -30,7 +30,7 @@ export class CarService {
 
     if (updateCarDto.licensePlate) {
       // Update QR code if license plate changes
-      car.qrCodeUrl = await this.generateQRCode(car.licensePlate);  
+      car.qrCodeUrl = await this.generateQRCode(car.licensePlate);
     }
     return this.carRepository.save(car);
   }
@@ -53,7 +53,7 @@ export class CarService {
 
   async findAllCarsByUserId(userId: number): Promise<Car[]> {
     return await this.carRepository.find({
-      where: { user: { id: userId } }
+      where: { user: { id: userId } },
     });
   }
 }

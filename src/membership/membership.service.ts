@@ -18,11 +18,16 @@ export class MembershipService {
     private userRepository: Repository<User>,
   ) {}
 
-  async createMembership(userId: number, membershipTypeId: number): Promise<Membership> {
+  async createMembership(
+    userId: number,
+    membershipTypeId: number,
+  ): Promise<Membership> {
     const user = await this.userRepository.findOneBy({ id: userId });
-    const membershipType = await this.membershipTypeRepository.findOneBy({ id: membershipTypeId });
+    const membershipType = await this.membershipTypeRepository.findOneBy({
+      id: membershipTypeId,
+    });
     if (!user || !membershipType) {
-        throw new Error('User or membership type not found');
+      throw new Error('User or membership type not found');
     }
 
     const startDate = new Date();
@@ -34,16 +39,20 @@ export class MembershipService {
       membershipType: membershipType,
       start_date: startDate,
       end_date: endDate,
-      status: 'active'  // Default status
+      status: 'active', // Default status
     });
 
     return this.membershipRepository.save(membership);
   }
 
-  async removeMembership(membershipId: number): Promise<Membership | undefined> {
-    const membership = await this.membershipRepository.findOneBy({ id: membershipId });
+  async removeMembership(
+    membershipId: number,
+  ): Promise<Membership | undefined> {
+    const membership = await this.membershipRepository.findOneBy({
+      id: membershipId,
+    });
     if (!membership) {
-        throw new Error('Membership not found');
+      throw new Error('Membership not found');
     }
     return await this.membershipRepository.remove(membership);
   }

@@ -9,7 +9,6 @@ import { UpdateLoyaltyRewardStatusDto } from './dto/update-loyalty_reward-status
 
 @Injectable()
 export class LoyaltyRewardService {
-
   constructor(
     @InjectRepository(Loyalty_Reward)
     private userRepository: Repository<User>,
@@ -17,7 +16,9 @@ export class LoyaltyRewardService {
     private loyaltyRewardTypeRepository: Repository<LoyaltyRewardType>,
   ) {}
 
-  async create(createLoyaltyRewardDto: CreateLoyaltyRewardDto): Promise<Loyalty_Reward> {
+  async create(
+    createLoyaltyRewardDto: CreateLoyaltyRewardDto,
+  ): Promise<Loyalty_Reward> {
     const { userId, loyaltyRewardTypeId } = createLoyaltyRewardDto;
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) {
@@ -26,7 +27,9 @@ export class LoyaltyRewardService {
 
     let loyaltyRewardType;
     if (loyaltyRewardTypeId) {
-      loyaltyRewardType = await this.loyaltyRewardTypeRepository.findOne({ where: { id: loyaltyRewardTypeId } });
+      loyaltyRewardType = await this.loyaltyRewardTypeRepository.findOne({
+        where: { id: loyaltyRewardTypeId },
+      });
       if (!loyaltyRewardType) {
         throw new Error('Loyalty Reward Type not found');
       }
@@ -36,13 +39,14 @@ export class LoyaltyRewardService {
         throw new Error('No Loyalty Reward Types available');
       }
       // Select a random reward type if no ID was provided
-      loyaltyRewardType = rewardTypes[Math.floor(Math.random() * rewardTypes.length)];
+      loyaltyRewardType =
+        rewardTypes[Math.floor(Math.random() * rewardTypes.length)];
     }
 
     const newReward = this.loyaltyRewardRepository.create({
       user: user,
       loyaltyRewardType: loyaltyRewardType,
-      isActive: false
+      isActive: false,
     });
 
     return this.loyaltyRewardRepository.save(newReward);
@@ -51,12 +55,17 @@ export class LoyaltyRewardService {
   async findAllRewardsForUser(userId: number): Promise<Loyalty_Reward[]> {
     return await this.loyaltyRewardRepository.find({
       where: { user: { id: userId } },
-      relations: ['loyaltyRewardType']
+      relations: ['loyaltyRewardType'],
     });
   }
 
-  async toggleRewardStatus(rewardId: number, updateDto: UpdateLoyaltyRewardStatusDto): Promise<Loyalty_Reward> {
-    const reward = await this.loyaltyRewardRepository.findOne({ where: { id: rewardId } });
+  async toggleRewardStatus(
+    rewardId: number,
+    updateDto: UpdateLoyaltyRewardStatusDto,
+  ): Promise<Loyalty_Reward> {
+    const reward = await this.loyaltyRewardRepository.findOne({
+      where: { id: rewardId },
+    });
     if (!reward) {
       throw new Error(`Loyalty reward with ID ${rewardId} not found.`);
     }

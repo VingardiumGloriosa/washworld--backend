@@ -1,26 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Location } from './entities/location.entity';
 import { CreateLocationDto } from './dto/create-location.dto';
 import { UpdateLocationDto } from './dto/update-location.dto';
 
 @Injectable()
 export class LocationService {
-  create(createLocationDto: CreateLocationDto) {
-    return 'This action adds a new location';
+  constructor(
+    @InjectRepository(Location)
+    private locationRepository: Repository<Location>,
+  ) {}
+
+  create(createLocationDto: CreateLocationDto): Promise<Location> {
+    const location = this.locationRepository.create(createLocationDto);
+    return this.locationRepository.save(location);
   }
 
-  findAll() {
-    return `This action returns all location`;
+  findAll(): Promise<Location[]> {
+    return this.locationRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} location`;
+  async findOne(id: number): Promise<Location> {
+    const location = await this.locationRepository.findOneBy({ id });
+    if (!location) {
+      throw new NotFoundException(`Location #${id} not found`);
+    }
+    return location;
   }
 
-  update(id: number, updateLocationDto: UpdateLocationDto) {
-    return `This action updates a #${id} location`;
+  async update(
+    id: number,
+    updateLocationDto: UpdateLocationDto,
+  ): Promise<Location> {
+    await this.locationRepository.update(id, updateLocationDto);
+    const updatedLocation = await this.locationRepository.findOneBy({ id });
+    if (!updatedLocation) {
+      throw new NotFoundException(`Location #${id} not found`);
+    }
+    return updatedLocation;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} location`;
+  async remove(id: number): Promise<void> {
+    const result = await this.locationRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Location #${id} not found`);
+    }
   }
 }

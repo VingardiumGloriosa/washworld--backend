@@ -16,9 +16,9 @@ export class LoyaltyRewardTypeService {
 
   async findOne(id: number): Promise<LoyaltyRewardType> {
     const rewardType = await this.loyaltyRewardTypeRepository.findOne({
-      where: { id: id }
+      where: { id: id },
     });
-    
+
     if (!rewardType) {
       throw new NotFoundException(`LoyaltyRewardType with ID ${id} not found.`);
     }

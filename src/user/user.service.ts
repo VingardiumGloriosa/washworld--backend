@@ -17,10 +17,13 @@ export class UserService {
     return this.userRepository.save(newUser);
   }
 
-  async updateUser(userId: number, updateUserDto: UpdateUserDto): Promise<User> {
+  async updateUser(
+    userId: number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<User> {
     const user = await this.userRepository.preload({
       id: userId,
-      ...updateUserDto
+      ...updateUserDto,
     });
     if (!user) {
       throw new Error('User not found');

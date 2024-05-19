@@ -11,7 +11,9 @@ describe('LoyaltyRewardTypeController', () => {
       providers: [LoyaltyRewardTypeService],
     }).compile();
 
-    controller = module.get<LoyaltyRewardTypeController>(LoyaltyRewardTypeController);
+    controller = module.get<LoyaltyRewardTypeController>(
+      LoyaltyRewardTypeController,
+    );
   });
 
   it('should be defined', () => {

@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { MembershipTypeService } from './membership_type.service';
 import { CreateMembershipTypeDto } from './dto/create-membership_type.dto';
 import { UpdateMembershipTypeDto } from './dto/update-membership_type.dto';
@@ -23,7 +31,10 @@ export class MembershipTypeController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMembershipTypeDto: UpdateMembershipTypeDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateMembershipTypeDto: UpdateMembershipTypeDto,
+  ) {
     return this.membershipTypeService.update(+id, updateMembershipTypeDto);
   }
 

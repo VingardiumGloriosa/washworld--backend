@@ -12,7 +12,7 @@ export class Car {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, user => user.cars)
+  @ManyToOne(() => User, (user) => user.cars)
   @JoinColumn({ name: 'user_id' })
   user: User;
 
