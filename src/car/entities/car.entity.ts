@@ -16,9 +16,9 @@ export class Car {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column({ type: 'text' })
-  licensePlate: string;
+  @Column({ type: 'bytea', nullable: true })
+  photo: Buffer;
 
   @Column({ type: 'text' })
-  qrCodeUrl: string;
+  licensePlate: string;
 }

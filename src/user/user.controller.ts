@@ -1,42 +1,27 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+
+const LOYALTY_REWARD_GOAL = 6
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.userService.findAll();
-  }
-
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  async getUser(@Param('id') id: string) {
+    return await this.userService.findDetailedUser(Number(id));
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @Get(':id/home')
+  async getUserHome(@Param('id') id: string) {
+    const user = await this.userService.findDetailedUser(Number(id));
+    return {
+      loyaltyRewards: user.loyaltyRewards,
+      loyaltyRewardProgress: {
+        progress: user.history.length % LOYALTY_REWARD_GOAL,
+        goal: LOYALTY_REWARD_GOAL
+      },
+      history: user.history
+    };
   }
 }

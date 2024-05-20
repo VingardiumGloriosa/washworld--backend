@@ -1,4 +1,5 @@
 import { Car } from 'src/car/entities/car.entity';
+import { History } from 'src/history/entities/history.entity';
 import { Loyalty_Reward } from 'src/loyalty_reward/entities/loyalty_reward.entity';
 import { Membership } from 'src/membership/entities/membership.entity';
 import {
@@ -36,4 +37,7 @@ export class User {
 
   @OneToMany(() => Loyalty_Reward, (reward) => reward.user)
   loyaltyRewards: Loyalty_Reward[];
+
+  @OneToMany(() => History, history => history.user)
+  history: History[];
 }

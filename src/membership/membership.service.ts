@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMembershipDto } from './dto/create-membership.dto';
-import { UpdateMembershipDto } from './dto/update-membership.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Membership } from './entities/membership.entity';
 import { Repository } from 'typeorm';
@@ -18,7 +16,7 @@ export class MembershipService {
     private userRepository: Repository<User>,
   ) {}
 
-  async createMembership(
+  async create(
     userId: number,
     membershipTypeId: number,
   ): Promise<Membership> {
@@ -45,7 +43,7 @@ export class MembershipService {
     return this.membershipRepository.save(membership);
   }
 
-  async removeMembership(
+  async remove(
     membershipId: number,
   ): Promise<Membership | undefined> {
     const membership = await this.membershipRepository.findOneBy({

@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MembershipModule } from './membership/membership.module';
 import { WashHallModule } from './wash_hall/wash_hall.module';
@@ -11,6 +9,8 @@ import { LoyaltyRewardTypeModule } from './loyalty_reward_type/loyalty_reward_ty
 import { LoyaltyRewardModule } from './loyalty_reward/loyalty_reward.module';
 import { CarModule } from './car/car.module';
 import { MembershipTypeModule } from './membership_type/membership_type.module';
+import { DistancesModule } from './distances/distances.module';
+import { HistoryModule } from './history/history.module';
 
 @Module({
   imports: [
@@ -38,8 +38,10 @@ import { MembershipTypeModule } from './membership_type/membership_type.module';
     LocationModule,
     SelfWashHallModule,
     WashHallModule,
+    DistancesModule,
+    HistoryModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

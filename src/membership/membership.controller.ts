@@ -1,45 +1,32 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Post, Param, Body, Delete, HttpException, HttpStatus } from '@nestjs/common';
 import { MembershipService } from './membership.service';
 import { CreateMembershipDto } from './dto/create-membership.dto';
-import { UpdateMembershipDto } from './dto/update-membership.dto';
 
-@Controller('membership')
-export class MembershipController {
-  constructor(private readonly membershipService: MembershipService) {}
+@Controller('user/:userId/membership')
+export class MembershipsController {
+  constructor(private readonly membershipsService: MembershipService) {}
 
   @Post()
-  create(@Body() createMembershipDto: CreateMembershipDto) {
-    return this.membershipService.create(createMembershipDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.membershipService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.membershipService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateMembershipDto: UpdateMembershipDto,
+  async createMembership(
+    @Param('userId') userId: string,
+    @Body() createMembershipDto: CreateMembershipDto
   ) {
-    return this.membershipService.update(+id, updateMembershipDto);
+    try {
+      return await this.membershipsService.create(Number(userId), createMembershipDto.membershipTypeId);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+    }
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.membershipService.remove(+id);
+  @Delete(':membershipId')
+  async deleteMembership(
+    @Param('userId') userId: string,
+    @Param('membershipId') membershipId: string
+  ) {
+    try {
+      return await this.membershipsService.remove(Number(membershipId));
+    } catch (error) {
+      throw new HttpException('Membership not found', HttpStatus.NOT_FOUND);
+    }
   }
 }

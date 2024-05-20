@@ -15,8 +15,6 @@ export class CarService {
 
   async create(createCarDto: CreateCarDto): Promise<Car> {
     const car = this.carRepository.create(createCarDto);
-    // Generate QR Code inside the create or before saving based on license plate
-    car.qrCodeUrl = await this.generateQRCode(car.licensePlate);
     return this.carRepository.save(car);
   }
 
@@ -27,11 +25,6 @@ export class CarService {
     }
 
     Object.assign(car, updateCarDto);
-
-    if (updateCarDto.licensePlate) {
-      // Update QR code if license plate changes
-      car.qrCodeUrl = await this.generateQRCode(car.licensePlate);
-    }
     return this.carRepository.save(car);
   }
 
@@ -42,13 +35,20 @@ export class CarService {
     }
   }
 
-  private async generateQRCode(data: string): Promise<string> {
-    try {
-      const url = await QRCode.toDataURL(data);
-      return url;
-    } catch (error) {
-      throw new Error('Failed to generate QR Code');
+  async findCarByUser(userId: number, carId: number): Promise<Car> {
+    const car = await this.carRepository.findOne({
+      where: {
+        id: carId,
+        user: { id: userId }
+      },
+      relations: ['user']
+    });
+
+    if (!car) {
+      throw new Error(`Car not found`);
     }
+
+    return car;
   }
 
   async findAllCarsByUserId(userId: number): Promise<Car[]> {

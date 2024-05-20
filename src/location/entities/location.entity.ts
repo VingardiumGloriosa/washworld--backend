@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { SelfWashHall } from 'src/self_wash_hall/entities/self_wash_hall.entity';
 import { WashHall } from 'src/wash_hall/entities/wash_hall.entity';
+import { History } from 'src/history/entities/history.entity';
 
 @Entity('locations')
 export class Location {
@@ -24,4 +25,7 @@ export class Location {
 
   @OneToMany(() => WashHall, (washHall) => washHall.location)
   washHalls: WashHall[];
+
+  @OneToMany(() => History, history => history.location)
+  history: History[];
 }

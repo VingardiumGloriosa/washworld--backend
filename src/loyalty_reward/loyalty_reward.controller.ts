@@ -1,45 +1,20 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Patch, Param, Body, UseGuards } from '@nestjs/common';
 import { LoyaltyRewardService } from './loyalty_reward.service';
-import { CreateLoyaltyRewardDto } from './dto/create-loyalty_reward.dto';
-import { UpdateLoyaltyRewardDto } from './dto/update-loyalty_reward-status.dto';
+import { UpdateLoyaltyRewardStatusDto } from './dto/update-loyalty_reward-status.dto';
 
-@Controller('loyalty-reward')
-export class LoyaltyRewardController {
-  constructor(private readonly loyaltyRewardService: LoyaltyRewardService) {}
+@Controller('user/:userId/loyalty-rewards')
+export class LoyaltyRewardsController {
+  constructor(private readonly loyaltyRewardsService: LoyaltyRewardService) {}
 
-  @Post()
-  create(@Body() createLoyaltyRewardDto: CreateLoyaltyRewardDto) {
-    return this.loyaltyRewardService.create(createLoyaltyRewardDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.loyaltyRewardService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.loyaltyRewardService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateLoyaltyRewardDto: UpdateLoyaltyRewardDto,
+  @Patch(':rewardId')
+  async toggleRewardStatus(
+    @Param('userId') userId: string,
+    @Param('rewardId') rewardId: string,
+    @Body() updateLoyaltyRewardStatusDto: UpdateLoyaltyRewardStatusDto
   ) {
-    return this.loyaltyRewardService.update(+id, updateLoyaltyRewardDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.loyaltyRewardService.remove(+id);
+    return await this.loyaltyRewardsService.toggleRewardStatus(
+      Number(rewardId),
+      updateLoyaltyRewardStatusDto
+    );
   }
 }

@@ -12,12 +12,12 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const newUser = this.userRepository.create(createUserDto);
     return this.userRepository.save(newUser);
   }
 
-  async updateUser(
+  async update(
     userId: number,
     updateUserDto: UpdateUserDto,
   ): Promise<User> {
@@ -31,12 +31,30 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  async removeUser(userId: number): Promise<void> {
+  async remove(userId: number): Promise<void> {
     const user = await this.userRepository.findOneBy({ id: userId });
     if (!user) {
       throw new Error('User not found');
     }
     await this.userRepository.remove(user);
+  }
+
+  async findDetailedUser(userId: number): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: [
+        'membership', 
+        'membership.membershipType', 
+        'cars', 
+        'loyaltyRewards', 
+        'history', 
+        'history.location'
+      ]
+    });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return user;
   }
 
   async findAll(): Promise<User[]> {

@@ -1,42 +1,56 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, HttpStatus, HttpCode, NotFoundException } from '@nestjs/common';
 import { CarService } from './car.service';
 import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
 
-@Controller('car')
+@Controller('user/:userId/cars')
 export class CarController {
   constructor(private readonly carService: CarService) {}
 
-  @Post()
-  create(@Body() createCarDto: CreateCarDto) {
-    return this.carService.create(createCarDto);
-  }
-
   @Get()
-  findAll() {
-    return this.carService.findAll();
+  @HttpCode(HttpStatus.OK)
+  async getAllCars(@Param('userId') userId: string) {
+    return await this.carService.findAllCarsByUserId(Number(userId));
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.carService.findOne(+id);
+  @Get(':carId')
+  @HttpCode(HttpStatus.OK)
+  async getCar(@Param('userId') userId: string, @Param('carId') carId: string) {
+    return await this.carService.findCarByUser(Number(userId), Number(carId));
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCarDto: UpdateCarDto) {
-    return this.carService.update(+id, updateCarDto);
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  async addCar(@Param('userId') userId: string, @Body() createCarDto: CreateCarDto) {
+    try {
+      return await this.carService.create(createCarDto);
+    } catch (error) {
+      throw new NotFoundException('User not found');
+    }
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.carService.remove(+id);
+  @Put(':carId')
+  @HttpCode(HttpStatus.OK)
+  async updateCar(
+    @Param('userId') userId: string,
+    @Param('carId') carId: string,
+    @Body() updateCarDto: UpdateCarDto
+  ) {
+    try {
+      return await this.carService.update(Number(carId), updateCarDto);
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+
+  @Delete(':carId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteCar(@Param('userId') userId: string, @Param('carId') carId: string) {
+    try {
+      await this.carService.remove(Number(carId));
+    } catch (error) {
+      throw new NotFoundException('Car not found or not removed');
+    }
+    return null;
   }
 }
