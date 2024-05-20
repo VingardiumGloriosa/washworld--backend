@@ -6,7 +6,7 @@ export class Membership_Type {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: false })
   name: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })

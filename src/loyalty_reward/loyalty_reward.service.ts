@@ -11,9 +11,11 @@ import { UpdateLoyaltyRewardStatusDto } from './dto/update-loyalty_reward-status
 export class LoyaltyRewardService {
   constructor(
     @InjectRepository(Loyalty_Reward)
-    private userRepository: Repository<User>,
     private loyaltyRewardRepository: Repository<Loyalty_Reward>,
-    private loyaltyRewardTypeRepository: Repository<LoyaltyRewardType>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @InjectRepository(LoyaltyRewardType)
+    private loyaltyRewardTypeRepository: Repository<LoyaltyRewardType>
   ) {}
 
   async create(

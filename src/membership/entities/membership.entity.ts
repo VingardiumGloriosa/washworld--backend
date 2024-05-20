@@ -30,7 +30,7 @@ export class Membership {
   @Column()
   status: string;
 
-  @OneToOne(() => User)
-  @Column()
-  user: User; // Assuming you're storing a reference to a user
+  @OneToOne(() => User, user => user.membership)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }

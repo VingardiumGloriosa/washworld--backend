@@ -19,6 +19,6 @@ export class Car {
   @Column({ type: 'bytea', nullable: true })
   photo: Buffer;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', name: 'license_plate' })
   licensePlate: string;
 }
