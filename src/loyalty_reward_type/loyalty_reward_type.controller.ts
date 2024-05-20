@@ -17,11 +17,6 @@ export class LoyaltyRewardTypeController {
     private readonly loyaltyRewardTypeService: LoyaltyRewardTypeService,
   ) {}
 
-  @Post()
-  create(@Body() createLoyaltyRewardTypeDto: CreateLoyaltyRewardTypeDto) {
-    return this.loyaltyRewardTypeService.create(createLoyaltyRewardTypeDto);
-  }
-
   @Get()
   findAll() {
     return this.loyaltyRewardTypeService.findAll();
@@ -30,21 +25,5 @@ export class LoyaltyRewardTypeController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.loyaltyRewardTypeService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateLoyaltyRewardTypeDto: UpdateLoyaltyRewardTypeDto,
-  ) {
-    return this.loyaltyRewardTypeService.update(
-      +id,
-      updateLoyaltyRewardTypeDto,
-    );
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.loyaltyRewardTypeService.remove(+id);
   }
 }

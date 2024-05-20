@@ -3,7 +3,7 @@ import { MembershipService } from './membership.service';
 import { CreateMembershipDto } from './dto/create-membership.dto';
 
 @Controller('user/:userId/membership')
-export class MembershipsController {
+export class MembershipController {
   constructor(private readonly membershipsService: MembershipService) {}
 
   @Post()

@@ -3,7 +3,7 @@ import { LoyaltyRewardService } from './loyalty_reward.service';
 import { UpdateLoyaltyRewardStatusDto } from './dto/update-loyalty_reward-status.dto';
 
 @Controller('user/:userId/loyalty-rewards')
-export class LoyaltyRewardsController {
+export class LoyaltyRewardController {
   constructor(private readonly loyaltyRewardsService: LoyaltyRewardService) {}
 
   @Patch(':rewardId')
