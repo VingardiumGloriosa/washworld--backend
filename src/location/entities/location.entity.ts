@@ -20,6 +20,20 @@ export class Location {
   @Column({ type: 'text' })
   maps_url: string;
 
+  @Column({
+    type: 'decimal',
+    precision: 9,
+    scale: 6
+  })
+  latitude: number;
+
+  @Column({
+    type: 'decimal',
+    precision: 9,
+    scale: 6
+  })
+  longitude: number;
+
   @OneToMany(() => SelfWashHall, (selfWashHall) => selfWashHall.location)
   selfWashHalls: SelfWashHall[];
 
