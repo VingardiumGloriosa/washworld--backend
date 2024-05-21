@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ResponseUserDto } from './dto/response-user.dto';
 
 @Injectable()
 export class UserService {
@@ -12,15 +13,16 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<ResponseUserDto> {
     const newUser = this.userRepository.create(createUserDto);
-    return this.userRepository.save(newUser);
+    const created = await this.userRepository.save(newUser);
+    return this.userToUserDto(created)
   }
 
   async update(
     userId: number,
     updateUserDto: UpdateUserDto,
-  ): Promise<User> {
+  ): Promise<ResponseUserDto> {
     const user = await this.userRepository.preload({
       id: userId,
       ...updateUserDto,
@@ -28,7 +30,8 @@ export class UserService {
     if (!user) {
       throw new Error('User not found');
     }
-    return this.userRepository.save(user);
+    const updated = await this.userRepository.save(user);
+    return this.userToUserDto(updated)
   }
 
   async remove(userId: number): Promise<void> {
@@ -39,7 +42,7 @@ export class UserService {
     await this.userRepository.remove(user);
   }
 
-  async findDetailedUser(userId: number): Promise<User> {
+  async findDetailedUser(userId: number): Promise<ResponseUserDto> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
       relations: [
@@ -54,18 +57,41 @@ export class UserService {
     if (!user) {
       throw new Error('User not found');
     }
-    return user;
+    return this.userToUserDto(user);
   }
 
-  async findAll(): Promise<User[]> {
-    return this.userRepository.find();
+  async findAll(): Promise<ResponseUserDto[]> {
+    const users = await this.userRepository.find()
+    return users.map(user => this.userToUserDto(user));
   }
 
-  async findOne(userId: number): Promise<User> {
+  async findOne(userId: number): Promise<ResponseUserDto> {
     const user = await this.userRepository.findOneBy({ id: userId });
     if (!user) {
       throw new Error('User not found');
     }
-    return user;
+    return this.userToUserDto(user);
+  }
+
+  private userToUserDto(user : User) : ResponseUserDto {
+    if (!user) {
+      throw new Error(`user not found`);
+    }
+
+    const userDto = new ResponseUserDto()
+    userDto.id = user.id
+    userDto.email = user.email
+    userDto.fullName = user.fullName
+    userDto.membership = user.membership
+    userDto.cars = user.cars
+    userDto.loyaltyRewards = user.loyaltyRewards
+    userDto.history = user.history
+
+    if (user.photo) {
+      const photoBase64 = user.photo.toString('base64');
+      userDto.photo = `data:image/jpeg;base64,${photoBase64}`;
+    }
+
+    return userDto;
   }
 }

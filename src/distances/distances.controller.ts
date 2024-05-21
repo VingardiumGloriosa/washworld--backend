@@ -8,7 +8,7 @@ export class DistancesController {
 
   @Post()
   calculateDistances(@Body() calculateDistancesDto: CalculateDistancesDto) {
-    const { currentLocation, destinationLocations } = calculateDistancesDto;
-    return this.distancesService.calculateDistances(currentLocation, destinationLocations);
+    const { currentLocation } = calculateDistancesDto;
+    return this.distancesService.calculateDistances(currentLocation);
   }
 }

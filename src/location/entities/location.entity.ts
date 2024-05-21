@@ -8,8 +8,8 @@ export class Location {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: 'text' })
-  photo_url: string;
+  @Column({ type: 'bytea', nullable: true })
+  photo: Buffer;
 
   @Column({ type: 'text' })
   name: string;

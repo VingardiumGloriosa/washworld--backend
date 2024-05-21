@@ -1,6 +1,17 @@
+import { Type } from "class-transformer";
+import { IsOptional, IsString } from "class-validator";
+
 export class CreateLocationDto {
-  readonly photo_url: string;
-  readonly name: string;
-  readonly address: string;
-  readonly maps_url: string;
+  @IsOptional()
+  @Type(() => Buffer)
+  photo?: Buffer;
+
+  @IsString()
+  name: string;
+
+  @IsString()
+  address: string;
+
+  @IsString()
+  maps_url: string;
 }

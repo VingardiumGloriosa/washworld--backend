@@ -1,16 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { LocationDto } from './dto/request-distances.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Location } from 'src/location/entities/location.entity';
 
 @Injectable()
 export class DistancesService {
-  calculateDistances(currentLocation: LocationDto, destinations: LocationDto[]): { id: number; distance: number }[] {
+  
+  constructor(
+    @InjectRepository(Location)
+    private locationRepository: Repository<Location>,
+  ) {}
+
+  async calculateDistances(currentLocation: LocationDto): Promise<{ id: number; distance: number }[]> {
+
+    const destinations = await this.locationRepository.find();
+
     return destinations.map(destination => {
       const distance = this.calculateDistance(currentLocation, destination);
       return { id: destination.id, distance };
     });
   }
 
-  private calculateDistance(location1: LocationDto, location2: LocationDto): number {
+  private calculateDistance(location1: LocationDto, location2: Location): number {
     // Haversine formula to calculate the great-circle distance
     const R = 6371e3; // meters
     const lat1 = location1.latitude * Math.PI / 180;

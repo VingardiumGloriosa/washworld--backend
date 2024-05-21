@@ -5,6 +5,7 @@ import * as QRCode from 'qrcode';
 import { Repository } from 'typeorm';
 import { Car } from './entities/car.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ResponseCarDto } from './dto/response-car.dto';
 
 @Injectable()
 export class CarService {
@@ -35,7 +36,7 @@ export class CarService {
     }
   }
 
-  async findCarByUser(userId: number, carId: number): Promise<Car> {
+  async findCarByUser(userId: number, carId: number): Promise<ResponseCarDto> {
     const car = await this.carRepository.findOne({
       where: {
         id: carId,
@@ -44,16 +45,32 @@ export class CarService {
       relations: ['user']
     });
 
+    return this.carToCarDto(car)
+  }
+
+  async findAllCarsByUserId(userId: number): Promise<ResponseCarDto[]> {
+    const cars = await this.carRepository.find({
+      where: { user: { id: userId } },
+    });
+
+    const carDtos = cars.map(car => this.carToCarDto(car))
+
+    return carDtos
+  }
+
+  private carToCarDto(car : Car) : ResponseCarDto {
     if (!car) {
       throw new Error(`Car not found`);
     }
 
-    return car;
-  }
+    const carDto = new ResponseCarDto()
+    carDto.licensePlate = car.licensePlate
 
-  async findAllCarsByUserId(userId: number): Promise<Car[]> {
-    return await this.carRepository.find({
-      where: { user: { id: userId } },
-    });
+    if (car.photo) {
+      const photoBase64 = car.photo.toString('base64');
+      carDto.photo = `data:image/jpeg;base64,${photoBase64}`;
+    }
+
+    return carDto;
   }
 }
