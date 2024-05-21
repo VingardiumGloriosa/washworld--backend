@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn } from 'typeorm';
 import { Membership } from 'src/membership/entities/membership.entity';
 
 @Entity('membership_types')
@@ -19,5 +19,6 @@ export class Membership_Type {
   washing_duration?: string;
 
   @OneToMany(() => Membership, (membership) => membership.membershipType)
+  @JoinColumn({ name: 'membership_id' })
   memberships: Membership[];
 }

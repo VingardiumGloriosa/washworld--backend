@@ -23,8 +23,9 @@ export class ResponseUserDto {
     @IsNotEmpty()
     fullName: string;
 
+    @IsOptional()
     @IsString()
-    photo?: string | null;
+    photo?: string | null = null;
      
     @IsNotEmpty()
     @Type(() => Membership)

@@ -17,6 +17,7 @@ export class Loyalty_Reward {
   user: User;
 
   @ManyToOne(() => LoyaltyRewardType, (type) => type.rewards)
+  @JoinColumn({ name: 'loyalty_reward_type_id' })
   loyaltyRewardType: LoyaltyRewardType;
 
   @Column({ default: true })

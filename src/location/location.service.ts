@@ -65,6 +65,8 @@ export class LocationService {
     if (location.photo) {
       const photoBase64 = location.photo.toString('base64');
       locationDto.photo = `data:image/jpeg;base64,${photoBase64}`;
+    } else {
+      locationDto.photo = null
     }
 
     return locationDto;

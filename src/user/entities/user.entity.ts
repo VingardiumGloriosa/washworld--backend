@@ -33,11 +33,14 @@ export class User {
   membership: Membership;
 
   @OneToMany(() => Car, (car) => car.user)
+  @JoinColumn({ name: 'car_id' })
   cars: Car[];
 
   @OneToMany(() => Loyalty_Reward, (reward) => reward.user)
+  @JoinColumn({ name: 'loyalty_reward_id' })
   loyaltyRewards: Loyalty_Reward[];
 
   @OneToMany(() => History, history => history.user)
+  @JoinColumn({ name: 'history_id' })
   history: History[];
 }

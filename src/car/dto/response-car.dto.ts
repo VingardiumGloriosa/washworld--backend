@@ -8,7 +8,5 @@ export class ResponseCarDto {
 
   @IsString()
   @IsOptional()
-  photo: string;
-
-
+  photo?: string | null = null;
 }
