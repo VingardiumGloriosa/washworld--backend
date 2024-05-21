@@ -6,7 +6,7 @@ export class LoyaltyRewardType {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: false })
   name: string;
 
   @OneToMany(() => Loyalty_Reward, (reward) => reward.loyaltyRewardType)

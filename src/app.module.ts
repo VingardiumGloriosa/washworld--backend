@@ -18,7 +18,6 @@ import { HistoryModule } from './history/history.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        url: process.env.DATABASE_URL,
         type: 'postgres',
         host: configService.get('DB_HOST'),
         port: +configService.get<number>('DB_PORT'),
@@ -26,7 +25,7 @@ import { HistoryModule } from './history/history.module';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: false,
       }),
       inject: [ConfigService],
     }),
