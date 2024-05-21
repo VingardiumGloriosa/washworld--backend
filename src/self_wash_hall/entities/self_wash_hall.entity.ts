@@ -16,9 +16,9 @@ export class SelfWashHall {
   @JoinColumn({ name: 'location_id' })
   location: Location;
 
-  @Column({ type: 'boolean', default: false })
-  is_in_use: boolean;
+  @Column({ type: 'boolean', default: false, name: 'is_in_use' })
+  isInUse: boolean;
 
-  @Column({ type: 'boolean', default: false })
-  is_out_of_service: boolean;
+  @Column({ type: 'boolean', default: false, name: 'is_out_of_service' })
+  isOutOfService: boolean;
 }

@@ -39,8 +39,8 @@ describe('WashHallController', () => {
     it('should create a new wash hall', async () => {
       const createWashHallDto: CreateWashHallDto = {
         locationId: 1,
-        finish_time: new Date(),
-        is_out_of_service: false,
+        finishTime: new Date(),
+        isOutOfService: false,
       };
       const washHall = { id: 1, ...createWashHallDto };
 
@@ -84,8 +84,8 @@ describe('WashHallController', () => {
   describe('update', () => {
     it('should update a wash hall', async () => {
       const id = 1;
-      const updateWashHallDto: UpdateWashHallDto = { is_out_of_service: true };
-      const washHall = { id, is_out_of_service: true };
+      const updateWashHallDto: UpdateWashHallDto = { isOutOfService: true };
+      const washHall = { id, isOutOfService: true };
 
       mockWashHallService.update.mockResolvedValue(washHall);
 

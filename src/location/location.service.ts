@@ -13,11 +13,11 @@ export class LocationService {
     private locationRepository: Repository<Location>,
   ) {}
 
-  async create(createLocationDto: CreateLocationDto): Promise<ResponseLocationDto> {
+  async create(createLocationDto: CreateLocationDto): Promise<Location> {
     const location = this.locationRepository.create(createLocationDto);
     const created = await this.locationRepository.save(location);
 
-    return this.locationToLocationDto(created)
+    return created
   }
 
   async findAll(): Promise<ResponseLocationDto[]> {
@@ -25,12 +25,12 @@ export class LocationService {
     return locations.map(location => this.locationToLocationDto(location));
   }
 
-  async findOne(id: number): Promise<ResponseLocationDto> {
+  async findOne(id: number): Promise<Location> {
     const location = await this.locationRepository.findOneBy({ id });
     if (!location) {
       throw new NotFoundException(`Location #${id} not found`);
     }
-    return this.locationToLocationDto(location);
+    return location;
   }
 
   async update(id: number,  updateLocationDto: UpdateLocationDto): Promise<ResponseLocationDto> {

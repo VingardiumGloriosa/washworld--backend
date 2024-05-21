@@ -18,7 +18,7 @@ export class WashHallService {
     const location = await this.locationService.findOne(
       createWashHallDto.locationId,
     );
-    const washHall = this.washHallRepository.create({
+    const washHall = await this.washHallRepository.create({
       ...createWashHallDto,
       location,
     });

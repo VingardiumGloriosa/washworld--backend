@@ -1,5 +1,13 @@
+import { IsBoolean, IsDate, IsNumber } from "class-validator";
+
 export class CreateWashHallDto {
-  readonly locationId: number;
-  readonly finish_time?: Date;
-  readonly is_out_of_service: boolean;
+
+  @IsNumber()
+  locationId: number;
+
+  @IsDate()
+  finishTime?: Date;
+
+  @IsBoolean()
+  isOutOfService: boolean;
 }

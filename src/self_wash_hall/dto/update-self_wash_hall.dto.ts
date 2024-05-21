@@ -1,4 +1,17 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateSelfWashHallDto } from './create-self_wash_hall.dto';
+import { IsBoolean, IsNumber, IsOptional } from 'class-validator';
 
-export class UpdateSelfWashHallDto extends PartialType(CreateSelfWashHallDto) {}
+export class UpdateSelfWashHallDto {
+
+    @IsNumber()
+    @IsOptional()
+    locationId?: number;
+  
+    @IsBoolean()
+    @IsOptional()
+    isInUse?: boolean;
+  
+    @IsBoolean()
+    @IsOptional()
+    isOutOfService?: boolean;
+  }
+  
