@@ -5,6 +5,8 @@ import { Location } from './entities/location.entity';
 import { CreateLocationDto } from './dto/create-location.dto';
 import { UpdateLocationDto } from './dto/update-location.dto';
 import { ResponseLocationDto } from './dto/response-location.dto';
+import { ResponseWashHallsDto } from './dto/response-wash-halls.dto';
+import { ResponseSelfWashHallsDto } from './dto/response-self-wash-halls.dto';
 
 @Injectable()
 export class LocationService {
@@ -59,8 +61,23 @@ export class LocationService {
     locationDto.name = location.name
     locationDto.address = location.address
     locationDto.maps_url = location.maps_url
-    locationDto.washHalls = location.washHalls
-    locationDto.selfWashHalls = location.selfWashHalls
+
+    const washHallsDto = new ResponseWashHallsDto()
+    const availableWashHalls = location.washHalls.filter(washHall => (!washHall.finishTime || washHall.finishTime.getTime() < Date.now()) && !washHall.isOutOfService)
+    washHallsDto.available = availableWashHalls.length
+    washHallsDto.total = location.washHalls.length
+    washHallsDto.outOfService = location.washHalls.filter(washHall => washHall.isOutOfService).length
+    washHallsDto.nextAvailable = availableWashHalls.find(washHall => !washHall.finishTime) ? null : availableWashHalls?.sort((a, b) => a.finishTime.getTime() - b.finishTime.getTime())[0]?.finishTime || null
+
+    const selfWashHallsDto = new ResponseSelfWashHallsDto()
+    const availableSelfWashHalls = location.selfWashHalls.filter(washHall => !washHall.isInUse && !washHall.isOutOfService)
+    selfWashHallsDto.available = availableSelfWashHalls.length
+    selfWashHallsDto.total = location.selfWashHalls.length
+    selfWashHallsDto.outOfService = location.selfWashHalls.filter(washHall => washHall.isOutOfService).length
+
+
+    locationDto.washHalls = washHallsDto
+    locationDto.selfWashHalls = selfWashHallsDto
 
     if (location.photo) {
       const photoBase64 = location.photo.toString('base64');

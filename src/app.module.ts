@@ -32,7 +32,7 @@ require('dotenv').config();
         cli: {
           migrationsDir: 'src/migrations',
         },
-        synchronize: false
+        synchronize: true
       }),
       inject: [ConfigService],
     }),
