@@ -3,13 +3,15 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  Put,
   Param,
   Delete,
+  UseInterceptors,
 } from '@nestjs/common';
 import { LocationService } from './location.service';
 import { CreateLocationDto } from './dto/create-location.dto';
 import { UpdateLocationDto } from './dto/update-location.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('locations')
 export class LocationController {
@@ -30,7 +32,8 @@ export class LocationController {
     return this.locationService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
+  @UseInterceptors(FileInterceptor('file'))
   update(
     @Param('id') id: number,
     @Body() updateLocationDto: UpdateLocationDto,

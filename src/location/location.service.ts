@@ -75,7 +75,6 @@ export class LocationService {
     selfWashHallsDto.total = location.selfWashHalls.length
     selfWashHallsDto.outOfService = location.selfWashHalls.filter(washHall => washHall.isOutOfService).length
 
-
     locationDto.washHalls = washHallsDto
     locationDto.selfWashHalls = selfWashHallsDto
 

@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, HttpStatus, HttpCode, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, HttpStatus, HttpCode, NotFoundException, UseInterceptors } from '@nestjs/common';
 import { CarService } from './car.service';
 import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('user/:userId/cars')
 export class CarController {
@@ -20,6 +21,7 @@ export class CarController {
   }
 
   @Post()
+  @UseInterceptors(FileInterceptor('file'))
   @HttpCode(HttpStatus.CREATED)
   async addCar(@Param('userId') userId: string, @Body() createCarDto: CreateCarDto) {
     try {
@@ -30,6 +32,7 @@ export class CarController {
   }
 
   @Put(':carId')
+  @UseInterceptors(FileInterceptor('file'))
   @HttpCode(HttpStatus.OK)
   async updateCar(
     @Param('userId') userId: string,
