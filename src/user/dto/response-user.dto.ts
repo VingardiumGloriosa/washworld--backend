@@ -1,9 +1,9 @@
 import { Type } from 'class-transformer';
 import { IsEmail, IsString, IsOptional, IsNotEmpty, IsNumber } from 'class-validator';
-import { Car } from 'src/car/entities/car.entity';
-import { History } from 'src/history/entities/history.entity';
-import { Loyalty_Reward } from 'src/loyalty_reward/entities/loyalty_reward.entity';
-import { Membership } from 'src/membership/entities/membership.entity';
+import { Car } from '../../car/entities/car.entity';
+import { History } from '../../history/entities/history.entity';
+import { Loyalty_Reward } from '../../loyalty_reward/entities/loyalty_reward.entity';
+import { Membership } from '../../membership/entities/membership.entity';
 
 export class ResponseUserDto {
   
@@ -27,9 +27,9 @@ export class ResponseUserDto {
     @IsString()
     photo?: string | null = null;
      
-    @IsNotEmpty()
+    @IsOptional()
     @Type(() => Membership)
-    membership: Membership;
+    membership: Membership | null = null;
 
     @IsNotEmpty()
     cars: Car[];

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Membership } from './entities/membership.entity';
 import { Repository } from 'typeorm';
 import { Membership_Type } from 'src/membership_type/entities/membership_type.entity';
-import { User } from 'src/user/entities/user.entity';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class MembershipService {

@@ -52,8 +52,8 @@ describe('WashHallService', () => {
     it('should create a new wash hall', async () => {
       const createWashHallDto: CreateWashHallDto = {
         locationId: 1,
-        finish_time: new Date(),
-        is_out_of_service: false,
+        finishTime: new Date(),
+        isOutOfService: false,
       };
 
       const location = { id: 1, name: 'Location 1' };
@@ -79,7 +79,7 @@ describe('WashHallService', () => {
 
   describe('findAll', () => {
     it('should return an array of wash halls', async () => {
-      const washHalls = [{ id: 1, is_out_of_service: false }];
+      const washHalls = [{ id: 1, isOutOfService: false }];
       mockWashHallRepository.find.mockResolvedValue(washHalls);
 
       const result = await service.findAll();
@@ -94,7 +94,7 @@ describe('WashHallService', () => {
   describe('findOne', () => {
     it('should return a single wash hall', async () => {
       const id = 1;
-      const washHall = { id, is_out_of_service: false };
+      const washHall = { id, isOutOfService: false };
       mockWashHallRepository.findOne.mockResolvedValue(washHall);
 
       const result = await service.findOne(id);
@@ -117,8 +117,8 @@ describe('WashHallService', () => {
   describe('update', () => {
     it('should update a wash hall', async () => {
       const id = 1;
-      const updateWashHallDto = { is_out_of_service: true };
-      const washHall = { id, is_out_of_service: true };
+      const updateWashHallDto = { isOutOfService: true };
+      const washHall = { id, isOutOfService: true };
 
       mockWashHallRepository.update.mockResolvedValue({ affected: 1 });
       mockWashHallRepository.findOne.mockResolvedValue(washHall);

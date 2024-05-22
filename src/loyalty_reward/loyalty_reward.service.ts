@@ -3,8 +3,8 @@ import { CreateLoyaltyRewardDto } from './dto/create-loyalty_reward.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Loyalty_Reward } from './entities/loyalty_reward.entity';
 import { Repository } from 'typeorm';
-import { LoyaltyRewardType } from 'src/loyalty_reward_type/entities/loyalty_reward_type.entity';
-import { User } from 'src/user/entities/user.entity';
+import { LoyaltyRewardType } from '../loyalty_reward_type/entities/loyalty_reward_type.entity';
+import { User } from '../user/entities/user.entity';
 import { UpdateLoyaltyRewardStatusDto } from './dto/update-loyalty_reward-status.dto';
 
 @Injectable()

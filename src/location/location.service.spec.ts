@@ -41,7 +41,6 @@ describe('LocationService', () => {
   describe('create', () => {
     it('should create a new location', async () => {
       const createLocationDto: CreateLocationDto = {
-        photo_url: 'http://example.com/photo.jpg',
         name: 'Test Location',
         address: '123 Test St',
         maps_url: 'http://maps.example.com',

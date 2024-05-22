@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn } from 'typeorm';
-import { Loyalty_Reward } from 'src/loyalty_reward/entities/loyalty_reward.entity';
+import { Loyalty_Reward } from '../../loyalty_reward/entities/loyalty_reward.entity';
 
 @Entity('loyalty_reward_types')
 export class LoyaltyRewardType {

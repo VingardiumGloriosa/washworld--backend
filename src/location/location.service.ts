@@ -21,7 +21,7 @@ export class LocationService {
   }
 
   async findAll(): Promise<ResponseLocationDto[]> {
-    const locations = await this.locationRepository.find();
+    const locations = await this.locationRepository.find({ relations: ['washHalls', 'selfWashHalls'] });
     return locations.map(location => this.locationToLocationDto(location));
   }
 
