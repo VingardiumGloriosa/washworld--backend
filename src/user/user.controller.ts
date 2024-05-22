@@ -3,7 +3,7 @@ import { UserService } from './user.service';
 
 const LOYALTY_REWARD_GOAL = 6
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

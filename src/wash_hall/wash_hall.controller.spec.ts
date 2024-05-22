@@ -57,7 +57,7 @@ describe('WashHallController', () => {
 
   describe('findAll', () => {
     it('should return an array of wash halls', async () => {
-      const washHalls = [{ id: 1, is_out_of_service: false }];
+      const washHalls = [{ id: 1, isOutOfService: false }];
       mockWashHallService.findAll.mockResolvedValue(washHalls);
 
       const result = await controller.findAll();
@@ -70,7 +70,7 @@ describe('WashHallController', () => {
   describe('findOne', () => {
     it('should return a single wash hall', async () => {
       const id = 1;
-      const washHall = { id, is_out_of_service: false };
+      const washHall = { id, isOutOfService: false };
 
       mockWashHallService.findOne.mockResolvedValue(washHall);
 

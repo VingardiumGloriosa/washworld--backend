@@ -5,8 +5,8 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { User } from 'src/user/entities/user.entity';
-import { LoyaltyRewardType } from 'src/loyalty_reward_type/entities/loyalty_reward_type.entity';
+import { User } from '../../user/entities/user.entity';
+import { LoyaltyRewardType } from '../../loyalty_reward_type/entities/loyalty_reward_type.entity';
 
 @Entity('loyalty_rewards')
 export class Loyalty_Reward {

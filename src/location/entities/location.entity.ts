@@ -1,15 +1,15 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn } from 'typeorm';
-import { SelfWashHall } from 'src/self_wash_hall/entities/self_wash_hall.entity';
-import { WashHall } from 'src/wash_hall/entities/wash_hall.entity';
-import { History } from 'src/history/entities/history.entity';
+import { SelfWashHall } from '../../self_wash_hall/entities/self_wash_hall.entity';
+import { WashHall } from '../../wash_hall/entities/wash_hall.entity';
+import { History } from '../../history/entities/history.entity';
 
 @Entity('locations')
 export class Location {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: 'bytea', nullable: true, default: () => 'null' })
-  photo: Buffer | null;
+  @Column({ type: 'bytea', nullable: true})
+  photo: Buffer;
 
   @Column({ type: 'text' })
   name: string;
@@ -43,5 +43,6 @@ export class Location {
   washHalls: WashHall[];
 
   @OneToMany(() => History, history => history.location)
+  @JoinColumn({ name: 'history_id' })
   history: History[];
 }

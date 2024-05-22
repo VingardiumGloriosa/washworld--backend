@@ -7,9 +7,9 @@ import {
   OneToOne,
 } from 'typeorm';
 import { Membership_Type } from '../../membership_type/entities/membership_type.entity';
-import { User } from 'src/user/entities/user.entity';
+import { User } from '../../user/entities/user.entity';
 
-@Entity()
+@Entity('memberships')
 export class Membership {
   @PrimaryGeneratedColumn()
   id: number;

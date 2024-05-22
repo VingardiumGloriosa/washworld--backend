@@ -5,7 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { Location } from 'src/location/entities/location.entity';
+import { Location } from '../../location/entities/location.entity';
 
 @Entity('wash_halls')
 export class WashHall {

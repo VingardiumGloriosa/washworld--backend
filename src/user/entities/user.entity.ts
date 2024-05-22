@@ -1,7 +1,7 @@
-import { Car } from 'src/car/entities/car.entity';
-import { History } from 'src/history/entities/history.entity';
-import { Loyalty_Reward } from 'src/loyalty_reward/entities/loyalty_reward.entity';
-import { Membership } from 'src/membership/entities/membership.entity';
+import { Car } from '../../car/entities/car.entity';
+import { History } from '../../history/entities/history.entity';
+import { Loyalty_Reward } from '../../loyalty_reward/entities/loyalty_reward.entity';
+import { Membership } from '../../membership/entities/membership.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -28,7 +28,7 @@ export class User {
   @Column({ type: 'text', name: 'full_name' })
   fullName: string;
 
-  @OneToOne(() => Membership, membership => membership.user)
+  @OneToOne(() => Membership, membership => membership.user, { nullable: true })
   @JoinColumn({ name: 'membership_id' })
   membership: Membership;
 

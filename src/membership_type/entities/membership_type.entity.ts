@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn } from 'typeorm';
-import { Membership } from 'src/membership/entities/membership.entity';
+import { Membership } from '../../membership/entities/membership.entity';
 
 @Entity('membership_types')
 export class Membership_Type {

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
-import * as QRCode from 'qrcode';
 import { Repository } from 'typeorm';
 import { Car } from './entities/car.entity';
 import { InjectRepository } from '@nestjs/typeorm';

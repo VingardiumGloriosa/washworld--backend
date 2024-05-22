@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { LocationDto } from './dto/request-distances.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Location } from 'src/location/entities/location.entity';
+import { Location } from '../location/entities/location.entity';
 
 @Injectable()
 export class DistancesService {

@@ -12,6 +12,8 @@ import { MembershipTypeModule } from './membership_type/membership_type.module';
 import { DistancesModule } from './distances/distances.module';
 import { HistoryModule } from './history/history.module';
 
+require('dotenv').config();
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -25,7 +27,12 @@ import { HistoryModule } from './history/history.module';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         autoLoadEntities: true,
-        synchronize: false,
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        migrations: [__dirname + '/migrations/*.js'],
+        cli: {
+          migrationsDir: 'src/migrations',
+        },
+        synchronize: false
       }),
       inject: [ConfigService],
     }),

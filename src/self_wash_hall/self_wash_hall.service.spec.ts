@@ -54,8 +54,8 @@ describe('SelfWashHallService', () => {
     it('should create a new self wash hall', async () => {
       const createSelfWashHallDto: CreateSelfWashHallDto = {
         locationId: 1,
-        is_in_use: false,
-        is_out_of_service: false,
+        isInUse: false,
+        isOutOfService: false,
       };
 
       const location = { id: 1, name: 'Location 1' };
@@ -84,7 +84,7 @@ describe('SelfWashHallService', () => {
   describe('findAll', () => {
     it('should return an array of self wash halls', async () => {
       const selfWashHalls = [
-        { id: 1, is_in_use: false, is_out_of_service: false },
+        { id: 1, isInUse: false, isOutOfService: false },
       ];
       mockSelfWashHallRepository.find.mockResolvedValue(selfWashHalls);
 
@@ -100,7 +100,7 @@ describe('SelfWashHallService', () => {
   describe('findOne', () => {
     it('should return a single self wash hall', async () => {
       const id = 1;
-      const selfWashHall = { id, is_in_use: false, is_out_of_service: false };
+      const selfWashHall = { id, isInUse: false, isOutOfService: false };
       mockSelfWashHallRepository.findOne.mockResolvedValue(selfWashHall);
 
       const result = await service.findOne(id);
@@ -123,8 +123,8 @@ describe('SelfWashHallService', () => {
   describe('update', () => {
     it('should update a self wash hall', async () => {
       const id = 1;
-      const updateSelfWashHallDto = { is_in_use: true };
-      const selfWashHall = { id, is_in_use: true, is_out_of_service: false };
+      const updateSelfWashHallDto = { isInUse: true };
+      const selfWashHall = { id, isInUse: true, is_out_of_service: false };
 
       mockSelfWashHallRepository.update.mockResolvedValue({ affected: 1 });
       mockSelfWashHallRepository.findOne.mockResolvedValue(selfWashHall);
