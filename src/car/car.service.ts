@@ -52,12 +52,12 @@ export class CarService {
     const car = await this.carRepository.findOne({
       where: {
         id: carId,
-        user: { id: userId }
+        user: { id: userId },
       },
-      relations: ['user']
+      relations: ['user'],
     });
 
-    return this.carToCarDto(car)
+    return this.carToCarDto(car);
   }
 
   async findAllCarsByUserId(userId: number): Promise<ResponseCarDto[]> {
@@ -65,22 +65,23 @@ export class CarService {
       where: { user: { id: userId } },
     });
 
-    const carDtos = cars.map(car => this.carToCarDto(car))
+    const carDtos = cars.map((car) => this.carToCarDto(car));
 
-    return carDtos
+    return carDtos;
   }
 
-  private carToCarDto(car : Car) : ResponseCarDto {
+  private carToCarDto(car: Car): ResponseCarDto {
     if (!car) {
       throw new Error(`Car not found`);
     }
 
-    const carDto = new ResponseCarDto()
-    carDto.licensePlate = car.licensePlate
+    const carDto = new ResponseCarDto();
+    carDto.licensePlate = car.licensePlate;
 
     if (car.photo) {
-      const photoBase64 = car.photo.toString('base64');
-      carDto.photo = `data:image/jpeg;base64,${photoBase64}`;
+      carDto.photo = `data:image/jpeg;base64,${car.photo}`;
+    } else {
+      car.photo = null;
     }
 
     return carDto;

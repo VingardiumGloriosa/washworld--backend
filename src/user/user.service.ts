@@ -17,7 +17,7 @@ export class UserService {
   async create(createUserDto: CreateUserDto): Promise<ResponseUserDto> {
     const newUser = this.userRepository.create(createUserDto);
     const created = await this.userRepository.save(newUser);
-    return this.userToUserDto(created)
+    return this.userToUserDto(created);
   }
 
   async update(
@@ -32,7 +32,7 @@ export class UserService {
       throw new Error('User not found');
     }
     const updated = await this.userRepository.save(user);
-    return this.userToUserDto(updated)
+    return this.userToUserDto(updated);
   }
 
   async remove(userId: number): Promise<void> {
@@ -47,13 +47,13 @@ export class UserService {
     const user = await this.userRepository.findOne({
       where: { id: userId },
       relations: [
-        'membership', 
-        'membership.membershipType', 
-        'cars', 
-        'loyaltyRewards', 
-        'history', 
-        'history.location'
-      ]
+        'membership',
+        'membership.membershipType',
+        'cars',
+        'loyaltyRewards',
+        'history',
+        'history.location',
+      ],
     });
     if (!user) {
       throw new Error('User not found');
@@ -62,8 +62,8 @@ export class UserService {
   }
 
   async findAll(): Promise<ResponseUserDto[]> {
-    const users = await this.userRepository.find()
-    return users.map(user => this.userToUserDto(user));
+    const users = await this.userRepository.find();
+    return users.map((user) => this.userToUserDto(user));
   }
 
   async findOne(userId: number): Promise<ResponseUserDto> {
@@ -74,23 +74,22 @@ export class UserService {
     return this.userToUserDto(user);
   }
 
-  private userToUserDto(user : User) : ResponseUserDto {
+  private userToUserDto(user: User): ResponseUserDto {
     if (!user) {
       throw new Error(`user not found`);
     }
 
-    const userDto = new ResponseUserDto()
-    userDto.id = user.id
-    userDto.email = user.email
-    userDto.fullName = user.fullName
-    userDto.membership = user.membership
-    userDto.cars = user.cars
-    userDto.loyaltyRewards = user.loyaltyRewards
-    userDto.history = user.history
+    const userDto = new ResponseUserDto();
+    userDto.id = user.id;
+    userDto.email = user.email;
+    userDto.fullName = user.fullName;
+    userDto.membership = user.membership;
+    userDto.cars = user.cars;
+    userDto.loyaltyRewards = user.loyaltyRewards;
+    userDto.history = user.history;
 
     if (user.photo) {
-      const photoBase64 = user.photo.toString('base64');
-      userDto.photo = `data:image/jpeg;base64,${photoBase64}`;
+      userDto.photo = `data:image/jpeg;base64,${user.photo}`;
     }
 
     return userDto;
