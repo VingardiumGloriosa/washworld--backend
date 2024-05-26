@@ -25,7 +25,8 @@ export class CarController {
   @HttpCode(HttpStatus.CREATED)
   async addCar(@Param('userId') userId: string, @Body() createCarDto: CreateCarDto) {
     try {
-      return await this.carService.create(createCarDto);
+      return await this.carService.create(Number(userId), createCarDto);
+      
     } catch (error) {
       throw new NotFoundException('User not found');
     }

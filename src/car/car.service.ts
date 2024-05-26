@@ -5,16 +5,29 @@ import { Repository } from 'typeorm';
 import { Car } from './entities/car.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResponseCarDto } from './dto/response-car.dto';
+import { User } from '@src/user/entities/user.entity';
 
 @Injectable()
 export class CarService {
   constructor(
     @InjectRepository(Car)
     private carRepository: Repository<Car>,
+    
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
-  async create(createCarDto: CreateCarDto): Promise<Car> {
+  async create(userId : number, createCarDto: CreateCarDto): Promise<Car> {
     const car = this.carRepository.create(createCarDto);
+    if(!car) throw Error('Failed to create car')
+
+    const user = await this.userRepository.findOne({ where: {
+      id: userId 
+    }});
+    if(!user) throw Error('User not found')
+
+    car.user = user
+
     return this.carRepository.save(car);
   }
 
