@@ -1,11 +1,18 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
+import { CreateUserDto } from './dto/create-user.dto';
 
 const LOYALTY_REWARD_GOAL = 6
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  async signUp(@Body() createUserDto: CreateUserDto) {
+    return await this.userService.create(createUserDto)
+  }
 
   @Get(':id')
   async getUser(@Param('id') id: string) {

@@ -5,16 +5,29 @@ import { Repository } from 'typeorm';
 import { Car } from './entities/car.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResponseCarDto } from './dto/response-car.dto';
+import { User } from '@src/user/entities/user.entity';
 
 @Injectable()
 export class CarService {
   constructor(
     @InjectRepository(Car)
     private carRepository: Repository<Car>,
+    
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
-  async create(createCarDto: CreateCarDto): Promise<Car> {
+  async create(userId : number, createCarDto: CreateCarDto): Promise<Car> {
     const car = this.carRepository.create(createCarDto);
+    if(!car) throw Error('Failed to create car')
+
+    const user = await this.userRepository.findOne({ where: {
+      id: userId 
+    }});
+    if(!user) throw Error('User not found')
+
+    car.user = user
+
     return this.carRepository.save(car);
   }
 
@@ -39,12 +52,12 @@ export class CarService {
     const car = await this.carRepository.findOne({
       where: {
         id: carId,
-        user: { id: userId }
+        user: { id: userId },
       },
-      relations: ['user']
+      relations: ['user'],
     });
 
-    return this.carToCarDto(car)
+    return this.carToCarDto(car);
   }
 
   async findAllCarsByUserId(userId: number): Promise<ResponseCarDto[]> {
@@ -52,22 +65,23 @@ export class CarService {
       where: { user: { id: userId } },
     });
 
-    const carDtos = cars.map(car => this.carToCarDto(car))
+    const carDtos = cars.map((car) => this.carToCarDto(car));
 
-    return carDtos
+    return carDtos;
   }
 
-  private carToCarDto(car : Car) : ResponseCarDto {
+  private carToCarDto(car: Car): ResponseCarDto {
     if (!car) {
       throw new Error(`Car not found`);
     }
 
-    const carDto = new ResponseCarDto()
-    carDto.licensePlate = car.licensePlate
+    const carDto = new ResponseCarDto();
+    carDto.licensePlate = car.licensePlate;
 
     if (car.photo) {
-      const photoBase64 = car.photo.toString('base64');
-      carDto.photo = `data:image/jpeg;base64,${photoBase64}`;
+      carDto.photo = `data:image/jpeg;base64,${car.photo}`;
+    } else {
+      car.photo = null;
     }
 
     return carDto;

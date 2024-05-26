@@ -19,12 +19,14 @@ export class LocationService {
     const location = this.locationRepository.create(createLocationDto);
     const created = await this.locationRepository.save(location);
 
-    return created
+    return created;
   }
 
   async findAll(): Promise<ResponseLocationDto[]> {
-    const locations = await this.locationRepository.find({ relations: ['washHalls', 'selfWashHalls'] });
-    return locations.map(location => this.locationToLocationDto(location));
+    const locations = await this.locationRepository.find({
+      relations: ['washHalls', 'selfWashHalls'],
+    });
+    return locations.map((location) => this.locationToLocationDto(location));
   }
 
   async findOne(id: number): Promise<Location> {
@@ -35,7 +37,10 @@ export class LocationService {
     return location;
   }
 
-  async update(id: number,  updateLocationDto: UpdateLocationDto): Promise<ResponseLocationDto> {
+  async update(
+    id: number,
+    updateLocationDto: UpdateLocationDto,
+  ): Promise<ResponseLocationDto> {
     await this.locationRepository.update(id, updateLocationDto);
     const updatedLocation = await this.locationRepository.findOneBy({ id });
     if (!updatedLocation) {
@@ -51,39 +56,55 @@ export class LocationService {
     }
   }
 
-  private locationToLocationDto(location : Location) : ResponseLocationDto {
+  private locationToLocationDto(location: Location): ResponseLocationDto {
     if (!location) {
       throw new Error(`Location not found`);
     }
 
-    const locationDto = new ResponseLocationDto()
-    locationDto.id = location.id
-    locationDto.name = location.name
-    locationDto.address = location.address
-    locationDto.maps_url = location.maps_url
+    const locationDto = new ResponseLocationDto();
+    locationDto.id = location.id;
+    locationDto.name = location.name;
+    locationDto.address = location.address;
+    locationDto.maps_url = location.maps_url;
+    locationDto.latitude = location.latitude;
+    locationDto.longitude = location.longitude;
 
-    const washHallsDto = new ResponseWashHallsDto()
-    const availableWashHalls = location.washHalls.filter(washHall => (!washHall.finishTime || washHall.finishTime.getTime() < Date.now()) && !washHall.isOutOfService)
-    washHallsDto.available = availableWashHalls.length
-    washHallsDto.total = location.washHalls.length
-    washHallsDto.outOfService = location.washHalls.filter(washHall => washHall.isOutOfService).length
-    washHallsDto.nextAvailable = availableWashHalls.find(washHall => !washHall.finishTime) ? null : availableWashHalls?.sort((a, b) => a.finishTime.getTime() - b.finishTime.getTime())[0]?.finishTime || null
+    const washHallsDto = new ResponseWashHallsDto();
+    const availableWashHalls = location.washHalls.filter(
+      (washHall) =>
+        (!washHall.finishTime || washHall.finishTime.getTime() < Date.now()) &&
+        !washHall.isOutOfService,
+    );
+    washHallsDto.available = availableWashHalls.length;
+    washHallsDto.total = location.washHalls.length;
+    washHallsDto.outOfService = location.washHalls.filter(
+      (washHall) => washHall.isOutOfService,
+    ).length;
+    washHallsDto.nextAvailable = availableWashHalls.find(
+      (washHall) => !washHall.finishTime,
+    )
+      ? null
+      : availableWashHalls?.sort(
+          (a, b) => a.finishTime.getTime() - b.finishTime.getTime(),
+        )[0]?.finishTime || null;
 
-    const selfWashHallsDto = new ResponseSelfWashHallsDto()
-    const availableSelfWashHalls = location.selfWashHalls.filter(washHall => !washHall.isInUse && !washHall.isOutOfService)
-    selfWashHallsDto.available = availableSelfWashHalls.length
-    selfWashHallsDto.total = location.selfWashHalls.length
-    selfWashHallsDto.outOfService = location.selfWashHalls.filter(washHall => washHall.isOutOfService).length
+    const selfWashHallsDto = new ResponseSelfWashHallsDto();
+    const availableSelfWashHalls = location.selfWashHalls.filter(
+      (washHall) => !washHall.isInUse && !washHall.isOutOfService,
+    );
+    selfWashHallsDto.available = availableSelfWashHalls.length;
+    selfWashHallsDto.total = location.selfWashHalls.length;
+    selfWashHallsDto.outOfService = location.selfWashHalls.filter(
+      (washHall) => washHall.isOutOfService,
+    ).length;
 
-
-    locationDto.washHalls = washHallsDto
-    locationDto.selfWashHalls = selfWashHallsDto
+    locationDto.washHalls = washHallsDto;
+    locationDto.selfWashHalls = selfWashHallsDto;
 
     if (location.photo) {
-      const photoBase64 = location.photo.toString('base64');
-      locationDto.photo = `data:image/jpeg;base64,${photoBase64}`;
+      locationDto.photo = `data:image/jpeg;base64,${location.photo}`;
     } else {
-      locationDto.photo = null
+      locationDto.photo = null;
     }
 
     return locationDto;
