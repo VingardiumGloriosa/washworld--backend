@@ -66,6 +66,8 @@ export class LocationService {
     locationDto.name = location.name;
     locationDto.address = location.address;
     locationDto.maps_url = location.maps_url;
+    locationDto.latitude = location.latitude;
+    locationDto.longitude = location.longitude;
 
     const washHallsDto = new ResponseWashHallsDto();
     const availableWashHalls = location.washHalls.filter(

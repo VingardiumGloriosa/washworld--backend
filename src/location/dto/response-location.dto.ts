@@ -22,7 +22,13 @@ export class ResponseLocationDto {
     @IsString()
     maps_url: string | null;
 
-    washHalls: ResponseWashHallsDto
+    washHalls: ResponseWashHallsDto;
 
-    selfWashHalls: ResponseSelfWashHallsDto
+    selfWashHalls: ResponseSelfWashHallsDto;
+
+    @IsString()
+    latitude: number;
+
+    @IsString()
+    longitude: number;
   }
