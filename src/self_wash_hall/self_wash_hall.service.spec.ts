@@ -1,4 +1,4 @@
-// src/self-wash-hall/self-wash-hall.service.spec.ts
+// ../self-wash-hall/self-wash-hall.service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -83,9 +83,7 @@ describe('SelfWashHallService', () => {
 
   describe('findAll', () => {
     it('should return an array of self wash halls', async () => {
-      const selfWashHalls = [
-        { id: 1, isInUse: false, isOutOfService: false },
-      ];
+      const selfWashHalls = [{ id: 1, isInUse: false, isOutOfService: false }];
       mockSelfWashHallRepository.find.mockResolvedValue(selfWashHalls);
 
       const result = await service.findAll();
