@@ -17,7 +17,7 @@ export class Location {
   @Column({ type: 'text' })
   address: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', name: 'maps_url' })
   mapsUrl: string;
 
   @Column({
