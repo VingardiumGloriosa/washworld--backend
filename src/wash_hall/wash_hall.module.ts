@@ -5,7 +5,7 @@ import { WashHall } from './entities/wash_hall.entity';
 import { WashHallController } from './wash_hall.controller';
 import { WashHallService } from './wash_hall.service';
 import { LocationModule } from '../location/location.module';
-import { LocationService } from 'src/location/location.service';
+import { LocationService } from '../location/location.service';
 
 @Module({
   controllers: [WashHallController],

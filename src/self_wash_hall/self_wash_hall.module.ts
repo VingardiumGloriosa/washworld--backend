@@ -5,7 +5,7 @@ import { SelfWashHall } from './entities/self_wash_hall.entity';
 import { SelfWashHallController } from './self_wash_hall.controller';
 import { SelfWashHallService } from './self_wash_hall.service';
 import { LocationModule } from '../location/location.module';
-import { LocationService } from 'src/location/location.service';
+import { LocationService } from '../location/location.service';
 
 @Module({
   controllers: [SelfWashHallController],
