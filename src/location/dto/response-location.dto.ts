@@ -26,9 +26,9 @@ export class ResponseLocationDto {
 
     selfWashHalls: ResponseSelfWashHallsDto;
 
-    @IsString()
+    @IsNumber()
     latitude: number;
 
-    @IsString()
+    @IsNumber()
     longitude: number;
   }
