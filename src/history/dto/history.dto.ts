@@ -1,5 +1,4 @@
-import { LocationDto } from "@src/distances/dto/request-distances.dto";
-import { ResponseLocationDto } from "@src/location/dto/response-location.dto";
+import { ResponseLocationDto } from "../../location/dto/response-location.dto";
 import { IsDate, IsNumber } from "class-validator";
 
 export class HistoryDto {

@@ -1,7 +1,7 @@
 import { Controller, Patch, Param, Body, UseGuards } from '@nestjs/common';
 import { LoyaltyRewardService } from './loyalty_reward.service';
 import { UpdateLoyaltyRewardStatusDto } from './dto/update-loyalty_reward-status.dto';
-import { MatchUserIdGuard } from '@src/jwt/jwt-auth.guard';
+import { MatchUserIdGuard } from '../jwt/jwt-auth.guard';
 
 @Controller('users/:userId/loyalty-rewards')
 export class LoyaltyRewardController {

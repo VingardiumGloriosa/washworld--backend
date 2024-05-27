@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { DistancesService } from './distances.service';
 import { LocationDto } from './dto/request-distances.dto';
-import { MatchUserIdGuard } from '@src/jwt/jwt-auth.guard';
+import { MatchUserIdGuard } from '../jwt/jwt-auth.guard';
 
 @Controller('distances')
 export class DistancesController {

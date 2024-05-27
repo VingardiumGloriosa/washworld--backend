@@ -4,7 +4,7 @@ import { Car } from '../../car/entities/car.entity';
 import { History } from '../../history/entities/history.entity';
 import { Loyalty_Reward } from '../../loyalty_reward/entities/loyalty_reward.entity';
 import { Membership } from '../../membership/entities/membership.entity';
-import { HistoryDto } from '@src/history/dto/history.dto';
+import { HistoryDto } from '../../history/dto/history.dto';
 import { User } from '../entities/user.entity';
 
 export class ResponseUserDto {
