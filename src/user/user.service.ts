@@ -22,7 +22,7 @@ export class UserService {
     const newUser = this.userRepository.create(createUserDto);
     newUser.password = bcrypt.hashSync(newUser.password, 10);
     const created = await this.userRepository.save(newUser);
-    return this.userToUserDto(created)
+    return new ResponseUserDto(created)
   }
 
   async update(
@@ -37,7 +37,7 @@ export class UserService {
       return null
     }
     const updated = await this.userRepository.save(user);
-    return this.userToUserDto(updated)
+    return new ResponseUserDto(updated)
   }
 
   async remove(userId: number): Promise<void> {
@@ -63,7 +63,7 @@ export class UserService {
     if (!user) {
       throw new Error('User not found');
     }
-    return this.userToUserDto(user);
+    return new ResponseUserDto(user);
   }
 
   async validateUser(email: string, pass: string): Promise<any> {
@@ -89,7 +89,7 @@ export class UserService {
 
   async findAll(): Promise<ResponseUserDto[]> {
     const users = await this.userRepository.find()
-    return users.map(user => this.userToUserDto(user));
+    return users.map(user => new ResponseUserDto(user));
   }
 
   async findOne(userId: number): Promise<ResponseUserDto> {
@@ -97,7 +97,7 @@ export class UserService {
     if (!user) {
       throw new Error('User not found');
     }
-    return this.userToUserDto(user);
+    return new ResponseUserDto(user);
   }
 
   async findOneByEmail(email: string): Promise<User> {
@@ -106,27 +106,5 @@ export class UserService {
       throw new Error('User not found');
     }
     return user;
-  }
-
-  private userToUserDto(user : User) : ResponseUserDto {
-    if (!user) {
-      throw new Error(`user not found`);
-    }
-
-    const userDto = new ResponseUserDto()
-    userDto.id = user.id
-    userDto.email = user.email
-    userDto.fullName = user.fullName
-    userDto.membership = user.membership
-    userDto.cars = user.cars
-    userDto.loyaltyRewards = user.loyaltyRewards
-    userDto.history = user.history
-
-    if (user.photo) {
-      const photoBase64 = user.photo.toString('base64');
-      userDto.photo = `data:image/jpeg;base64,${photoBase64}`;
-    }
-
-    return userDto;
   }
 }

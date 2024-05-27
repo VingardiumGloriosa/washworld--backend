@@ -5,8 +5,6 @@ import { Location } from './entities/location.entity';
 import { CreateLocationDto } from './dto/create-location.dto';
 import { UpdateLocationDto } from './dto/update-location.dto';
 import { ResponseLocationDto } from './dto/response-location.dto';
-import { ResponseWashHallsDto } from './dto/response-wash-halls.dto';
-import { ResponseSelfWashHallsDto } from './dto/response-self-wash-halls.dto';
 
 @Injectable()
 export class LocationService {
@@ -26,7 +24,7 @@ export class LocationService {
     const locations = await this.locationRepository.find({
       relations: ['washHalls', 'selfWashHalls'],
     });
-    return locations.map((location) => this.locationToLocationDto(location));
+    return locations.map((location) => new ResponseLocationDto(location));
   }
 
   async findOne(id: number): Promise<Location> {
@@ -46,7 +44,7 @@ export class LocationService {
     if (!updatedLocation) {
       throw new NotFoundException(`Location #${id} not found`);
     }
-    return this.locationToLocationDto(updatedLocation);
+    return new ResponseLocationDto(updatedLocation);
   }
 
   async remove(id: number): Promise<void> {
@@ -54,60 +52,5 @@ export class LocationService {
     if (result.affected === 0) {
       throw new NotFoundException(`Location #${id} not found`);
     }
-  }
-
-  private locationToLocationDto(location: Location): ResponseLocationDto {
-    if (!location) {
-      throw new Error(`Location not found`);
-    }
-
-    const locationDto = new ResponseLocationDto();
-    locationDto.id = location.id;
-    locationDto.name = location.name;
-    locationDto.address = location.address;
-    locationDto.maps_url = location.maps_url;
-    locationDto.latitude = Number(location.latitude);
-    locationDto.longitude = Number(location.longitude);
-
-    const washHallsDto = new ResponseWashHallsDto();
-    const availableWashHalls = location.washHalls.filter(
-      (washHall) =>
-        (!washHall.finishTime || washHall.finishTime.getTime() < Date.now()) &&
-        !washHall.isOutOfService,
-    );
-    washHallsDto.available = availableWashHalls.length;
-    washHallsDto.total = location.washHalls.length;
-    washHallsDto.outOfService = location.washHalls.filter(
-      (washHall) => washHall.isOutOfService,
-    ).length;
-    washHallsDto.nextAvailable = availableWashHalls.find(
-      (washHall) => !washHall.finishTime,
-    )
-      ? null
-      : availableWashHalls?.sort(
-          (a, b) => a.finishTime.getTime() - b.finishTime.getTime(),
-        )[0]?.finishTime || null;
-
-    const selfWashHallsDto = new ResponseSelfWashHallsDto();
-    const availableSelfWashHalls = location.selfWashHalls.filter(
-      (washHall) => !washHall.isInUse && !washHall.isOutOfService,
-    );
-    selfWashHallsDto.available = availableSelfWashHalls.length;
-    selfWashHallsDto.total = location.selfWashHalls.length;
-    selfWashHallsDto.outOfService = location.selfWashHalls.filter(
-      (washHall) => washHall.isOutOfService,
-    ).length;
-
-    locationDto.washHalls = washHallsDto;
-    locationDto.selfWashHalls = selfWashHallsDto;
-    locationDto.photo = location.photo?.toString()
-
-    // if (location.photo) {
-    //   locationDto.photo = `data:image/jpeg;base64,${location.photo}`;
-    // } else {
-    //   locationDto.photo = null;
-    // }
-
-    return locationDto;
   }
 }
