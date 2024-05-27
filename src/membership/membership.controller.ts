@@ -1,7 +1,7 @@
 import { Controller, Post, Param, Body, Delete, HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 import { MembershipService } from './membership.service';
 import { CreateMembershipDto } from './dto/create-membership.dto';
-import { MatchUserIdGuard } from '@src/jwt/jwt-auth.guard';
+import { MatchUserIdGuard } from '../jwt/jwt-auth.guard';
 
 @Controller('user/:userId/membership')
 export class MembershipController {

@@ -8,7 +8,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ResponseUserDto } from './dto/response-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
-import { JwtPayload } from '@src/jwt/jwt.interface';
+import { JwtPayload } from '../jwt/jwt.interface';
 
 @Injectable()
 export class UserService {

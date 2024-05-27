@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { Car } from './entities/car.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResponseCarDto } from './dto/response-car.dto';
-import { User } from '@src/user/entities/user.entity';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class CarService {

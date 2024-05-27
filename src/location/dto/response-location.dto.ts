@@ -51,7 +51,7 @@ export class ResponseLocationDto {
       // this.photo = location.photo?.toString()
   
       if (location.photo) {
-        this.photo = `data:image/jpeg;base64,${location.photo}`;
+        this.photo = `data:image/jpeg;base64,${location.photo.toString('base64')}`;
       } else {
         this.photo = null;
       }

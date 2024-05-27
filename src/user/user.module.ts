@@ -4,7 +4,7 @@ import { UserController } from './user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from '@src/jwt/jwt.strategy';
+import { JwtStrategy } from '../jwt/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 
 require('dotenv').config();

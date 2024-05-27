@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } f
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { MatchUserIdGuard } from '@src/jwt/jwt-auth.guard';
+import { MatchUserIdGuard } from '../jwt/jwt-auth.guard';
 
 const LOYALTY_REWARD_GOAL = 6
 
@@ -34,7 +34,7 @@ export class UserController {
     return {
       loyaltyRewards: user.loyaltyRewards,
       loyaltyRewardProgress: {
-        progress: user.history.length % LOYALTY_REWARD_GOAL,
+        progress: (user.history?.length || 0) % LOYALTY_REWARD_GOAL,
         goal: LOYALTY_REWARD_GOAL
       },
       history: user.history
