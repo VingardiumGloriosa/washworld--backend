@@ -18,7 +18,7 @@ export class Location {
   address: string;
 
   @Column({ type: 'text' })
-  maps_url: string;
+  mapsUrl: string;
 
   @Column({
     type: 'decimal',

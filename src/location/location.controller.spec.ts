@@ -40,7 +40,7 @@ describe('LocationController', () => {
       const createLocationDto: CreateLocationDto = {
         name: 'Test Location',
         address: '123 Test St',
-        maps_url: 'http://maps.example.com',
+        mapsUrl: 'http://maps.example.com',
       };
       const location = { id: 1, ...createLocationDto };
 

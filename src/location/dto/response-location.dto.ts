@@ -13,7 +13,7 @@ export class ResponseLocationDto {
       this.id = location.id;
       this.name = location.name;
       this.address = location.address;
-      this.maps_url = location.maps_url;
+      this.mapsUrl = location.mapsUrl;
       this.latitude = Number(location.latitude);
       this.longitude = Number(location.longitude);
   
@@ -71,7 +71,7 @@ export class ResponseLocationDto {
     address: string;
   
     @IsString()
-    maps_url: string | null;
+    mapsUrl: string | null;
 
     washHalls: ResponseWashHallsDto;
 

@@ -16,5 +16,5 @@ export class UpdateLocationDto {
   
     @IsOptional()
     @IsString()
-    maps_url?: string;
+    mapsUrl?: string;
   }

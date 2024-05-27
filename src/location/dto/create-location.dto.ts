@@ -13,5 +13,5 @@ export class CreateLocationDto {
   address: string;
 
   @IsString()
-  maps_url: string;
+  mapsUrl: string;
 }
