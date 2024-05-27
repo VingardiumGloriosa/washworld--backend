@@ -1,8 +1,9 @@
-import { IsArray, IsNumber, ValidateNested } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class LocationDto {
     @IsNumber()
+    @IsOptional()
     readonly id: number; 
 
     @IsNumber()
@@ -16,9 +17,4 @@ export class CalculateDistancesDto {
     @ValidateNested()
     @Type(() => LocationDto)
     currentLocation: LocationDto;
-
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => LocationDto)
-    destinationLocations: LocationDto[];
 }
