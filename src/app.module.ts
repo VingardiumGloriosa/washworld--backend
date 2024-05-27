@@ -45,7 +45,8 @@ require('dotenv').config();
     SelfWashHallModule,
     WashHallModule,
     DistancesModule,
-    HistoryModule
+    HistoryModule,
+    DistancesModule
   ],
   controllers: [],
   providers: [],

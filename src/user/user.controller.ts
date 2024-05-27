@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 
 const LOYALTY_REWARD_GOAL = 6
 
@@ -12,6 +13,11 @@ export class UserController {
   @HttpCode(HttpStatus.CREATED)
   async signUp(@Body() createUserDto: CreateUserDto) {
     return await this.userService.create(createUserDto)
+  }
+
+  @Post('login')
+  async login(@Body() loginDto: LoginUserDto) {
+    return this.userService.login(loginDto);
   }
 
   @Get(':id')
