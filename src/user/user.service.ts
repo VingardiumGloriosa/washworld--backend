@@ -55,7 +55,8 @@ export class UserService {
         'membership', 
         'membership.membershipType', 
         'cars', 
-        'loyaltyRewards', 
+        'loyaltyRewards',
+        'loyaltyRewards.loyaltyRewardType',
         'history', 
         'history.location'
       ]

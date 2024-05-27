@@ -6,6 +6,7 @@ import { Loyalty_Reward } from '../../loyalty_reward/entities/loyalty_reward.ent
 import { Membership } from '../../membership/entities/membership.entity';
 import { HistoryDto } from '../../history/dto/history.dto';
 import { User } from '../entities/user.entity';
+import { ResponseLoyaltyRewardDto } from '../../loyalty_reward/dto/response-loyalty_reward.dto';
 
 export class ResponseUserDto {
 
@@ -19,7 +20,7 @@ export class ResponseUserDto {
         this.fullName = user.fullName
         this.membership = user.membership
         this.cars = user.cars
-        this.loyaltyRewards = user.loyaltyRewards
+        this.loyaltyRewards = user.loyaltyRewards.map(lr => new ResponseLoyaltyRewardDto(lr))
         this.history = user.history.map(history => new HistoryDto(history))
     
         if (user.photo) {
@@ -56,7 +57,7 @@ export class ResponseUserDto {
     cars: Car[];
 
     @IsNotEmpty()
-    loyaltyRewards: Loyalty_Reward[];
+    loyaltyRewards: ResponseLoyaltyRewardDto[];
 
     @IsNotEmpty()
     history: HistoryDto[];

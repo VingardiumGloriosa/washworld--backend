@@ -14,12 +14,13 @@ export class Loyalty_Reward {
   id: number;
 
   @ManyToOne(() => User, (user) => user.loyaltyRewards)
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @ManyToOne(() => LoyaltyRewardType, (type) => type.rewards)
   @JoinColumn({ name: 'loyalty_reward_type_id' })
   loyaltyRewardType: LoyaltyRewardType;
 
-  @Column({ default: true })
+  @Column({ default: true, name: 'is_active' })
   isActive: boolean;
 }
