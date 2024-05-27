@@ -100,12 +100,13 @@ export class LocationService {
 
     locationDto.washHalls = washHallsDto;
     locationDto.selfWashHalls = selfWashHallsDto;
+    locationDto.photo = location.photo?.toString()
 
-    if (location.photo) {
-      locationDto.photo = `data:image/jpeg;base64,${location.photo}`;
-    } else {
-      locationDto.photo = null;
-    }
+    // if (location.photo) {
+    //   locationDto.photo = `data:image/jpeg;base64,${location.photo}`;
+    // } else {
+    //   locationDto.photo = null;
+    // }
 
     return locationDto;
   }

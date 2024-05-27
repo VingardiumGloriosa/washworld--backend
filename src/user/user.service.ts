@@ -20,6 +20,7 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto): Promise<ResponseUserDto> {
     const newUser = this.userRepository.create(createUserDto);
+    newUser.password = bcrypt.hashSync(newUser.password, 10);
     const created = await this.userRepository.save(newUser);
     return this.userToUserDto(created)
   }
@@ -33,7 +34,7 @@ export class UserService {
       ...updateUserDto,
     });
     if (!user) {
-      throw new Error('User not found');
+      return null
     }
     const updated = await this.userRepository.save(user);
     return this.userToUserDto(updated)
@@ -42,7 +43,7 @@ export class UserService {
   async remove(userId: number): Promise<void> {
     const user = await this.userRepository.findOneBy({ id: userId });
     if (!user) {
-      throw new Error('User not found');
+      throw null;
     }
     await this.userRepository.remove(user);
   }
@@ -77,7 +78,7 @@ export class UserService {
   async login(loginDto: LoginUserDto) {
     const user = await this.validateUser(loginDto.email, loginDto.password);
     if (!user) {
-      throw new Error('unauthorized');
+      return null;
     }
 
     const payload: JwtPayload = { email: user.email };

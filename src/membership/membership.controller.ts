@@ -1,12 +1,14 @@
-import { Controller, Post, Param, Body, Delete, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Param, Body, Delete, HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 import { MembershipService } from './membership.service';
 import { CreateMembershipDto } from './dto/create-membership.dto';
+import { MatchUserIdGuard } from '@src/jwt/jwt-auth.guard';
 
 @Controller('user/:userId/membership')
 export class MembershipController {
   constructor(private readonly membershipsService: MembershipService) {}
 
   @Post()
+  @UseGuards(MatchUserIdGuard)
   async createMembership(
     @Param('userId') userId: string,
     @Body() createMembershipDto: CreateMembershipDto
@@ -19,6 +21,7 @@ export class MembershipController {
   }
 
   @Delete(':membershipId')
+  @UseGuards(MatchUserIdGuard)
   async deleteMembership(
     @Param('userId') userId: string,
     @Param('membershipId') membershipId: string

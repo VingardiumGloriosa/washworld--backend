@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } f
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { MatchUserIdGuard } from '@src/jwt/jwt-auth.guard';
 
 const LOYALTY_REWARD_GOAL = 6
 
@@ -20,13 +21,15 @@ export class UserController {
     return this.userService.login(loginDto);
   }
 
-  @Get(':id')
-  async getUser(@Param('id') id: string) {
+  @Get(':userId')
+  @UseGuards(MatchUserIdGuard)
+  async getUser(@Param('userId') id: string) {
     return await this.userService.findDetailedUser(Number(id));
   }
 
-  @Get(':id/home')
-  async getUserHome(@Param('id') id: string) {
+  @Get(':userId/home')
+  @UseGuards(MatchUserIdGuard)
+  async getUserHome(@Param('userId') id: string) {
     const user = await this.userService.findDetailedUser(Number(id));
     return {
       loyaltyRewards: user.loyaltyRewards,

@@ -11,6 +11,7 @@ import { CarModule } from './car/car.module';
 import { MembershipTypeModule } from './membership_type/membership_type.module';
 import { DistancesModule } from './distances/distances.module';
 import { HistoryModule } from './history/history.module';
+import { AuthModule } from './jwt/auth.module';
 
 require('dotenv').config();
 
@@ -46,7 +47,8 @@ require('dotenv').config();
     WashHallModule,
     DistancesModule,
     HistoryModule,
-    DistancesModule
+    DistancesModule,
+    AuthModule
   ],
   controllers: [],
   providers: [],
