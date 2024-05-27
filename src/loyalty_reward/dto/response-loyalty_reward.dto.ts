@@ -6,7 +6,7 @@ export class ResponseLoyaltyRewardDto {
     constructor(loyaltyReward: Loyalty_Reward) {
         this.id = loyaltyReward.id
         this.isActive = loyaltyReward.isActive
-        this.name = loyaltyReward.loyaltyRewardType.name
+        this.name = loyaltyReward.loyaltyRewardType?.name || 'Unknown'
     }
 
     @IsNumber()

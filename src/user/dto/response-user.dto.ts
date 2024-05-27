@@ -6,7 +6,7 @@ import { Loyalty_Reward } from '../../loyalty_reward/entities/loyalty_reward.ent
 import { Membership } from '../../membership/entities/membership.entity';
 import { HistoryDto } from '../../history/dto/history.dto';
 import { User } from '../entities/user.entity';
-import { ResponseLoyaltyRewardDto } from 'src/loyalty_reward/dto/response-loyalty_reward.dto';
+import { ResponseLoyaltyRewardDto } from '../../loyalty_reward/dto/response-loyalty_reward.dto';
 
 export class ResponseUserDto {
 
