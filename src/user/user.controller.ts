@@ -1,8 +1,9 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { MatchUserIdGuard } from '../jwt/jwt-auth.guard';
+import { JwtAuthGuard } from '../jwt/jwt-auth.guard';
+import { UserId } from 'src/jwt/user-id.decorator';
 
 const LOYALTY_REWARD_GOAL = 6
 
@@ -16,21 +17,28 @@ export class UserController {
     return await this.userService.create(createUserDto)
   }
 
+  @Delete()
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async delete(@UserId() userId: number) {
+    return this.userService.remove(userId)
+  }
+
   @Post('login')
   async login(@Body() loginDto: LoginUserDto) {
     return this.userService.login(loginDto);
   }
 
-  @Get(':userId')
-  @UseGuards(MatchUserIdGuard)
-  async getUser(@Param('userId') id: string) {
-    return await this.userService.findDetailedUser(Number(id));
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  async getUser(@UserId() userId: number) {
+    return await this.userService.findDetailedUser(userId);
   }
 
-  @Get(':userId/home')
-  @UseGuards(MatchUserIdGuard)
-  async getUserHome(@Param('userId') id: string) {
-    const user = await this.userService.findDetailedUser(Number(id));
+  @Get('home')
+  @UseGuards(JwtAuthGuard)
+  async getUserHome(@UserId() userId: number) {
+    const user = await this.userService.findDetailedUser(userId);
     return {
       loyaltyRewards: user.loyaltyRewards,
       loyaltyRewardProgress: {

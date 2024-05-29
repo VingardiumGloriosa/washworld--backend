@@ -2,19 +2,20 @@ import { Controller, Post, Param, Body, Delete, HttpException, HttpStatus, UseGu
 import { MembershipService } from './membership.service';
 import { CreateMembershipDto } from './dto/create-membership.dto';
 import { MatchUserIdGuard } from '../jwt/jwt-auth.guard';
+import { UserId } from 'src/jwt/user-id.decorator';
 
-@Controller('user/:userId/membership')
+@Controller('users/membership')
 export class MembershipController {
   constructor(private readonly membershipsService: MembershipService) {}
 
   @Post()
   @UseGuards(MatchUserIdGuard)
   async createMembership(
-    @Param('userId') userId: string,
+    @UserId() userId : number,
     @Body() createMembershipDto: CreateMembershipDto
   ) {
     try {
-      return await this.membershipsService.create(Number(userId), createMembershipDto.membershipTypeId);
+      return await this.membershipsService.create(userId, createMembershipDto.membershipTypeId);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.NOT_FOUND);
     }
@@ -23,7 +24,6 @@ export class MembershipController {
   @Delete(':membershipId')
   @UseGuards(MatchUserIdGuard)
   async deleteMembership(
-    @Param('userId') userId: string,
     @Param('membershipId') membershipId: string
   ) {
     try {

@@ -20,8 +20,8 @@ export class ResponseUserDto {
         this.fullName = user.fullName
         this.membership = user.membership
         this.cars = user.cars
-        this.loyaltyRewards = user.loyaltyRewards.map(lr => new ResponseLoyaltyRewardDto(lr))
-        this.history = user.history.map(history => new HistoryDto(history))
+        this.loyaltyRewards = user.loyaltyRewards?.map(lr => new ResponseLoyaltyRewardDto(lr)) || []
+        this.history = user.history?.map(history => new HistoryDto(history)) || []
     
         if (user.photo) {
           const photoBase64 = user.photo.toString('base64');

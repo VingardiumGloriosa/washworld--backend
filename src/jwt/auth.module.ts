@@ -6,6 +6,7 @@ import { UserService } from '../user/user.service'; // Adjust the path if necess
 import { UserModule } from '../user/user.module'; // Adjust the path if necessary
 import { JwtStrategy } from './jwt.strategy';
 import { MatchUserIdGuard } from './jwt-auth.guard';
+import { UserId } from './user-id.decorator';
 
 require('dotenv').config();
 

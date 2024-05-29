@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
@@ -19,7 +19,18 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<ResponseUserDto> {
+    
+    if(!createUserDto.email || !createUserDto.password || !createUserDto.fullName) {
+      throw new ConflictException('Email, full name and password are required');
+    }
+
+    const existingUser = await this.userRepository.findOne({ where: { email: createUserDto.email } });
+    if (existingUser) {
+        throw new ConflictException('Email already in use');
+    }
+
     const newUser = this.userRepository.create(createUserDto);
+    
     newUser.password = bcrypt.hashSync(newUser.password, 10);
     const created = await this.userRepository.save(newUser);
     return new ResponseUserDto(created)
@@ -34,7 +45,7 @@ export class UserService {
       ...updateUserDto,
     });
     if (!user) {
-      return null
+      throw new NotFoundException('User not found')
     }
     const updated = await this.userRepository.save(user);
     return new ResponseUserDto(updated)
@@ -43,7 +54,7 @@ export class UserService {
   async remove(userId: number): Promise<void> {
     const user = await this.userRepository.findOneBy({ id: userId });
     if (!user) {
-      throw null;
+      throw new NotFoundException('User not found');
     }
     await this.userRepository.remove(user);
   }
@@ -62,7 +73,7 @@ export class UserService {
       ]
     });
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
     return new ResponseUserDto(user);
   }
@@ -79,10 +90,10 @@ export class UserService {
   async login(loginDto: LoginUserDto) {
     const user = await this.validateUser(loginDto.email, loginDto.password);
     if (!user) {
-      return null;
+      throw new NotFoundException('User not found');
     }
 
-    const payload: JwtPayload = { email: user.email };
+    const payload: JwtPayload = { email: user.email, id: user.id };
     return {
       access_token: this.jwtService.sign(payload),
     };
@@ -96,7 +107,7 @@ export class UserService {
   async findOne(userId: number): Promise<ResponseUserDto> {
     const user = await this.userRepository.findOneBy({ id: userId });
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException();
     }
     return new ResponseUserDto(user);
   }
@@ -104,7 +115,7 @@ export class UserService {
   async findOneByEmail(email: string): Promise<User> {
     const user = await this.userRepository.findOneBy({ email });
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException();
     }
     return user;
   }
