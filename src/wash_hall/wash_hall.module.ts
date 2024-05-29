@@ -1,4 +1,4 @@
-// src/wash-hall/wash-hall.module.ts
+// ../wash-hall/wash-hall.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { WashHall } from './entities/wash_hall.entity';
