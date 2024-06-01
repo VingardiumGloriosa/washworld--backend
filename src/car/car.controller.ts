@@ -16,36 +16,37 @@ import { CarService } from './car.service';
 import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { JwtAuthGuard, MatchUserIdGuard } from '../jwt/jwt-auth.guard';
+import { JwtAuthGuard } from '../jwt/jwt-auth.guard';
+import { UserId } from 'src/jwt/user-id.decorator';
 
-@Controller('users/:userId/cars')
+@Controller('users/cars')
 export class CarController {
   constructor(private readonly carService: CarService) {}
 
   @Get()
-  @UseGuards(MatchUserIdGuard)
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  async getAllCars(@Param('userId') userId: string) {
-    return await this.carService.findAllCarsByUserId(Number(userId));
+  async getAllCars(@UserId() userId : number) {
+    return await this.carService.findAllCarsByUserId(userId);
   }
 
   @Get(':carId')
-  @UseGuards(MatchUserIdGuard)
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  async getCar(@Param('userId') userId: string, @Param('carId') carId: string) {
-    return await this.carService.findCarByUser(Number(userId), Number(carId));
+  async getCar(@UserId() userId : number, @Param('carId') carId: string) {
+    return await this.carService.findCarByUser(userId, Number(carId));
   }
 
   @Post()
-  @UseGuards(MatchUserIdGuard)
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   @HttpCode(HttpStatus.CREATED)
   async addCar(
-    @Param('userId') userId: string,
+    @UserId() userId : number,
     @Body() createCarDto: CreateCarDto,
   ) {
     try {
-      return await this.carService.create(Number(userId), createCarDto);
+      return await this.carService.create(userId, createCarDto);
       
     } catch (error) {
       throw new NotFoundException('User not found');
@@ -53,11 +54,10 @@ export class CarController {
   }
 
   @Put(':carId')
-  @UseGuards(MatchUserIdGuard)
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   @HttpCode(HttpStatus.OK)
   async updateCar(
-    @Param('userId') userId: string,
     @Param('carId') carId: string,
     @Body() updateCarDto: UpdateCarDto,
   ) {
@@ -69,10 +69,9 @@ export class CarController {
   }
 
   @Delete(':carId')
-  @UseGuards(MatchUserIdGuard)
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteCar(
-    @Param('userId') userId: string,
     @Param('carId') carId: string,
   ) {
     try {

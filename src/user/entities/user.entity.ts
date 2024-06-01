@@ -9,9 +9,11 @@ import {
   JoinColumn,
   OneToMany,
   OneToOne,
+  Unique,
 } from 'typeorm';
 
 @Entity('users')
+@Unique(['email'])
 export class User {
   @PrimaryGeneratedColumn('increment')
   id: number;

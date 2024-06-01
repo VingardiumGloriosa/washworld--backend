@@ -31,7 +31,7 @@ require('dotenv').config();
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         migrations: [__dirname + '/migrations/*.js'],
         cli: {
-          migrationsDir: '../migrations',
+          migrationsDir: 'src/migrations',
         },
         synchronize: false
       }),

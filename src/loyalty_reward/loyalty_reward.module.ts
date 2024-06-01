@@ -11,7 +11,11 @@ import { LoyaltyRewardTypeModule } from '../loyalty_reward_type/loyalty_reward_t
 @Module({
   controllers: [LoyaltyRewardController],
   providers: [LoyaltyRewardService],
-  imports: [TypeOrmModule.forFeature([Loyalty_Reward]), UserModule, LoyaltyRewardTypeModule],
+  imports: [
+    TypeOrmModule.forFeature([Loyalty_Reward]),
+    UserModule,
+    LoyaltyRewardTypeModule,
+  ],
   exports: [TypeOrmModule.forFeature([Loyalty_Reward]), LoyaltyRewardService],
 })
 export class LoyaltyRewardModule {}
