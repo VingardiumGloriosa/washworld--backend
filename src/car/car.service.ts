@@ -24,6 +24,7 @@ export class CarService {
     const user = await this.userRepository.findOne({ where: {
       id: userId 
     }});
+    
     if(!user) throw Error('User not found')
 
     car.user = user
