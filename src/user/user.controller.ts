@@ -29,7 +29,7 @@ export class UserController {
     return this.userService.login(loginDto);
   }
 
-  @Get('me')
+  @Get()
   @UseGuards(JwtAuthGuard)
   async getUser(@UserId() userId: number) {
     const user = await this.userService.findDetailedUser(userId);
