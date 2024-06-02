@@ -14,5 +14,6 @@ export class UpdateUserDto {
   password?: string;
 
   @IsOptional()
-  photo?: Buffer;
+  @IsString()
+  photo?: string;
 }

@@ -15,6 +15,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from '../jwt/jwt.interface';
 import { UpdateProfilePhotoDto } from './dto/update-profile-photo.dto';
+import { ImageCompressionService } from 'src/image-compression/image-compression.service';
 
 @Injectable()
 export class UserService {
@@ -22,6 +23,7 @@ export class UserService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
+    private readonly imageCompressionService: ImageCompressionService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<ResponseUserDto> {
@@ -40,7 +42,10 @@ export class UserService {
       throw new ConflictException('Email already in use');
     }
 
-    const newUser = this.userRepository.create(createUserDto);
+    const newUser = this.userRepository.create({
+      ...createUserDto,
+      photo: createUserDto.photo ? await this.imageCompressionService.compressImage(Buffer.from(createUserDto.photo, "base64"), 50, { x: 300, y: 300}) : null
+    });
 
     newUser.password = bcrypt.hashSync(newUser.password, 10);
     const created = await this.userRepository.save(newUser);
@@ -54,6 +59,7 @@ export class UserService {
     const user = await this.userRepository.preload({
       id: userId,
       ...updateUserDto,
+      photo: updateUserDto.photo ? await this.imageCompressionService.compressImage(Buffer.from(updateUserDto.photo, "base64"), 50, { x: 300, y: 300}) : null
     });
     if (!user) {
       throw new NotFoundException('User not found');

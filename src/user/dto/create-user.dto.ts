@@ -14,5 +14,6 @@ export class CreateUserDto {
   fullName: string;
 
   @IsOptional()
-  photo?: Buffer;
+  @IsString()
+  photo?: string;
 }
