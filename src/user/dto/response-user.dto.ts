@@ -13,6 +13,7 @@ import { Membership } from '../../membership/entities/membership.entity';
 import { HistoryDto } from '../../history/dto/history.dto';
 import { User } from '../entities/user.entity';
 import { ResponseLoyaltyRewardDto } from '../../loyalty_reward/dto/response-loyalty_reward.dto';
+import { ResponseCarDto } from '../../car/dto/response-car.dto';
 
 export class ResponseUserDto {
   constructor(user: User) {
@@ -20,15 +21,28 @@ export class ResponseUserDto {
       throw new Error(`User not found`);
     }
 
-    this.id = user.id;
-    this.email = user.email;
-    this.fullName = user.fullName;
-    this.membership = user.membership;
-    this.cars = user.cars;
-    this.loyaltyRewards =
-      user.loyaltyRewards?.map((lr) => new ResponseLoyaltyRewardDto(lr)) || [];
-    this.history =
-      user.history?.map((history) => new HistoryDto(history)) || [];
+    constructor (user : User) {
+        if (!user) {
+          throw new Error(`User not found`);
+        }
+    
+        this.id = user.id
+        this.email = user.email
+        this.fullName = user.fullName
+        this.membership = user.membership
+        this.cars = user.cars?.map(c => new ResponseCarDto(c))
+        this.loyaltyRewards = user.loyaltyRewards?.map(lr => new ResponseLoyaltyRewardDto(lr)) || []
+        this.history = user.history?.map(history => new HistoryDto(history)) || []
+    
+        if (user.photo) {
+          const photoBase64 = user.photo.toString('base64');
+          this.photo = `data:image/jpeg;base64,${photoBase64}`;
+        }
+      }
+  
+    @IsNumber()
+    @IsNotEmpty()
+    id: Number
 
     if (user.photo) {
       const photoBase64 = user.photo.toString('base64');
@@ -48,9 +62,8 @@ export class ResponseUserDto {
   @IsNotEmpty()
   password: string;
 
-  @IsString()
-  @IsNotEmpty()
-  fullName: string;
+    @IsNotEmpty()
+    cars: ResponseCarDto[];
 
   @IsOptional()
   @IsString()
