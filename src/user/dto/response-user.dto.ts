@@ -7,6 +7,7 @@ import { Membership } from '../../membership/entities/membership.entity';
 import { HistoryDto } from '../../history/dto/history.dto';
 import { User } from '../entities/user.entity';
 import { ResponseLoyaltyRewardDto } from '../../loyalty_reward/dto/response-loyalty_reward.dto';
+import { ResponseCarDto } from 'src/car/dto/response-car.dto';
 
 export class ResponseUserDto {
 
@@ -19,7 +20,7 @@ export class ResponseUserDto {
         this.email = user.email
         this.fullName = user.fullName
         this.membership = user.membership
-        this.cars = user.cars
+        this.cars = user.cars?.map(c => new ResponseCarDto(c))
         this.loyaltyRewards = user.loyaltyRewards?.map(lr => new ResponseLoyaltyRewardDto(lr)) || []
         this.history = user.history?.map(history => new HistoryDto(history)) || []
     
@@ -54,7 +55,7 @@ export class ResponseUserDto {
     membership: Membership | null = null;
 
     @IsNotEmpty()
-    cars: Car[];
+    cars: ResponseCarDto[];
 
     @IsNotEmpty()
     loyaltyRewards: ResponseLoyaltyRewardDto[];

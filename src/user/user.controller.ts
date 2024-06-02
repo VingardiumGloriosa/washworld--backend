@@ -29,10 +29,12 @@ export class UserController {
     return this.userService.login(loginDto);
   }
 
-  @Get()
+  @Get('me')
   @UseGuards(JwtAuthGuard)
   async getUser(@UserId() userId: number) {
-    return await this.userService.findDetailedUser(userId);
+    const user = await this.userService.findDetailedUser(userId);
+    console.log(user)
+    return user;
   }
 
   @Get('home')

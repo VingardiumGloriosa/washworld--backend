@@ -76,9 +76,7 @@ export class CarService {
       throw new Error(`Car not found`);
     }
 
-    const carDto = new ResponseCarDto();
-    carDto.id = car.id;
-    carDto.licensePlate = car.licensePlate;
+    const carDto = new ResponseCarDto(car);
 
     if (car.photo) {
       carDto.photo = `data:image/jpeg;base64,${car.photo}`;
