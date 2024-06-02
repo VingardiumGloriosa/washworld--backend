@@ -17,7 +17,7 @@ import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../jwt/jwt-auth.guard';
-import { UserId } from 'src/jwt/user-id.decorator';
+import { UserId } from '../jwt/user-id.decorator';
 
 @Controller('users/cars')
 export class CarController {

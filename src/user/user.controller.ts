@@ -3,9 +3,9 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtAuthGuard } from '../jwt/jwt-auth.guard';
-import { UserId } from 'src/jwt/user-id.decorator';
+import { UserId } from '../jwt/user-id.decorator';
 
-const LOYALTY_REWARD_GOAL = 6
+export const LOYALTY_REWARD_GOAL = 6
 
 @Controller('users')
 export class UserController {
