@@ -1,4 +1,9 @@
-import { ConflictException, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotAcceptableException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
@@ -9,6 +14,7 @@ import { ResponseUserDto } from './dto/response-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from '../jwt/jwt.interface';
+import { UpdateProfilePhotoDto } from './dto/update-profile-photo.dto';
 
 @Injectable()
 export class UserService {
@@ -19,21 +25,26 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<ResponseUserDto> {
-    
-    if(!createUserDto.email || !createUserDto.password || !createUserDto.fullName) {
+    if (
+      !createUserDto.email ||
+      !createUserDto.password ||
+      !createUserDto.fullName
+    ) {
       throw new ConflictException('Email, full name and password are required');
     }
 
-    const existingUser = await this.userRepository.findOne({ where: { email: createUserDto.email } });
+    const existingUser = await this.userRepository.findOne({
+      where: { email: createUserDto.email },
+    });
     if (existingUser) {
-        throw new ConflictException('Email already in use');
+      throw new ConflictException('Email already in use');
     }
 
     const newUser = this.userRepository.create(createUserDto);
-    
+
     newUser.password = bcrypt.hashSync(newUser.password, 10);
     const created = await this.userRepository.save(newUser);
-    return new ResponseUserDto(created)
+    return new ResponseUserDto(created);
   }
 
   async update(
@@ -45,10 +56,10 @@ export class UserService {
       ...updateUserDto,
     });
     if (!user) {
-      throw new NotFoundException('User not found')
+      throw new NotFoundException('User not found');
     }
     const updated = await this.userRepository.save(user);
-    return new ResponseUserDto(updated)
+    return new ResponseUserDto(updated);
   }
 
   async remove(userId: number): Promise<void> {
@@ -65,9 +76,9 @@ export class UserService {
       relations: [
         'loyaltyRewards',
         'loyaltyRewards.loyaltyRewardType',
-        'history', 
-        'history.location'
-      ]
+        'history',
+        'history.location',
+      ],
     });
     if (!user) {
       throw new NotFoundException('User not found');
@@ -78,12 +89,9 @@ export class UserService {
   async findDetailedUser(userId: number): Promise<ResponseUserDto> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: [
-        'membership', 
-        'membership.membershipType', 
-        'cars',
-      ]
+      relations: ['membership', 'membership.membershipType', 'cars'],
     });
+    console.log(user);
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -112,8 +120,8 @@ export class UserService {
   }
 
   async findAll(): Promise<ResponseUserDto[]> {
-    const users = await this.userRepository.find()
-    return users.map(user => new ResponseUserDto(user));
+    const users = await this.userRepository.find();
+    return users.map((user) => new ResponseUserDto(user));
   }
 
   async findOne(userId: number): Promise<ResponseUserDto> {
@@ -130,5 +138,19 @@ export class UserService {
       throw new NotFoundException();
     }
     return user;
+  }
+
+  async updateProfilePhoto(
+    userId: number,
+    updateProfilePhotoDto: UpdateProfilePhotoDto,
+  ): Promise<ResponseUserDto> {
+    const user = await this.userRepository.findOneBy({ id: userId });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    user.photo = Buffer.from(updateProfilePhotoDto.photo, 'base64');
+    const updated = await this.userRepository.save(user);
+    return new ResponseUserDto(updated);
   }
 }

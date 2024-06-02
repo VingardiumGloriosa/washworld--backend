@@ -57,9 +57,7 @@ describe('SelfWashHallController', () => {
 
   describe('findAll', () => {
     it('should return an array of self wash halls', async () => {
-      const selfWashHalls = [
-        { id: 1, isInUse: false, isOutOfService: false },
-      ];
+      const selfWashHalls = [{ id: 1, isInUse: false, isOutOfService: false }];
       mockSelfWashHallService.findAll.mockResolvedValue(selfWashHalls);
 
       const result = await controller.findAll();

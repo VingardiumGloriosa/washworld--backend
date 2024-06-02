@@ -13,7 +13,7 @@ export class CarService {
   constructor(
     @InjectRepository(Car)
     private carRepository: Repository<Car>,
-    
+
     @InjectRepository(User)
     private userRepository: Repository<User>,
 
@@ -25,15 +25,17 @@ export class CarService {
       ...createCarDto,
       photo: createCarDto.photo ? await this.imageCompressionService.compressImage(Buffer.from(createCarDto.photo, "base64"), 50) : null
     });
-    if(!car) throw Error('Failed to create car')
+    if (!car) throw Error('Failed to create car');
 
-    const user = await this.userRepository.findOne({ where: {
-      id: userId 
-    }});
-    
-    if(!user) throw Error('User not found')
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+    });
 
-    car.user = user
+    if (!user) throw Error('User not found');
+
+    car.user = user;
 
     const savedCar = this.carRepository.save(car);
 

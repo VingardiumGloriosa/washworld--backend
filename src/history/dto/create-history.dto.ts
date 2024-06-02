@@ -1,10 +1,10 @@
-import { IsDate, IsNumber, IsOptional } from "class-validator";
+import { IsDate, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateHistoryDto {
-    @IsDate()
-    @IsOptional()
-    date?: Date;
+  @IsDate()
+  @IsOptional()
+  date?: Date;
 
-    @IsNumber()
-    locationId: number;
+  @IsNumber()
+  locationId: number;
 }

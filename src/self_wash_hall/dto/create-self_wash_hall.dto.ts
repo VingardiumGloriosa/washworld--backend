@@ -1,7 +1,6 @@
-import { IsBoolean, IsDate, IsNumber } from "class-validator";
+import { IsBoolean, IsDate, IsNumber } from 'class-validator';
 
 export class CreateSelfWashHallDto {
-
   @IsNumber()
   locationId: number;
 

@@ -15,7 +15,7 @@ export class LoyaltyRewardService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @InjectRepository(LoyaltyRewardType)
-    private loyaltyRewardTypeRepository: Repository<LoyaltyRewardType>
+    private loyaltyRewardTypeRepository: Repository<LoyaltyRewardType>,
   ) {}
 
   async create(

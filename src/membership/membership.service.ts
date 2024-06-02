@@ -16,10 +16,7 @@ export class MembershipService {
     private userRepository: Repository<User>,
   ) {}
 
-  async create(
-    userId: number,
-    membershipTypeId: number,
-  ): Promise<Membership> {
+  async create(userId: number, membershipTypeId: number): Promise<Membership> {
     const user = await this.userRepository.findOneBy({ id: userId });
     const membershipType = await this.membershipTypeRepository.findOneBy({
       id: membershipTypeId,
@@ -43,9 +40,7 @@ export class MembershipService {
     return this.membershipRepository.save(membership);
   }
 
-  async remove(
-    membershipId: number,
-  ): Promise<Membership | undefined> {
+  async remove(membershipId: number): Promise<Membership | undefined> {
     const membership = await this.membershipRepository.findOneBy({
       id: membershipId,
     });

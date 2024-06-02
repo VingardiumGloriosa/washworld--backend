@@ -26,14 +26,14 @@ export class CarController {
   @Get()
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  async getAllCars(@UserId() userId : number) {
+  async getAllCars(@UserId() userId: number) {
     return await this.carService.findAllCarsByUserId(userId);
   }
 
   @Get(':carId')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  async getCar(@UserId() userId : number, @Param('carId') carId: string) {
+  async getCar(@UserId() userId: number, @Param('carId') carId: string) {
     return await this.carService.findCarByUser(userId, Number(carId));
   }
 
@@ -41,16 +41,13 @@ export class CarController {
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   @HttpCode(HttpStatus.CREATED)
-  async addCar(
-    @UserId() userId : number,
-    @Body() createCarDto: CreateCarDto,
-  ) {
+  async addCar(@UserId() userId: number, @Body() createCarDto: CreateCarDto) {
     // try {
-      return await this.carService.create(userId, createCarDto);
-      
+    return await this.carService.create(userId, createCarDto);
+
     // } catch (error) {
-      // console.log(error)
-      // throw new NotFoundException('User not found');
+    // console.log(error)
+    // throw new NotFoundException('User not found');
     // }
   }
 
@@ -72,9 +69,7 @@ export class CarController {
   @Delete(':carId')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
-  async deleteCar(
-    @Param('carId') carId: string,
-  ) {
+  async deleteCar(@Param('carId') carId: string) {
     try {
       await this.carService.remove(Number(carId));
     } catch (error) {

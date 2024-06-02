@@ -8,7 +8,8 @@ import { ImageCompressionService } from 'src/image-compression/image-compression
 
 @Module({
   controllers: [CarController],
+
   providers: [CarService, ImageCompressionService],
-  imports: [TypeOrmModule.forFeature([Car]), UserModule]
+  imports: [TypeOrmModule.forFeature([Car]), UserModule],
 })
 export class CarModule {}

@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { History } from './entities/history.entity';
@@ -24,7 +28,7 @@ export class HistoryService {
     @InjectRepository(Location)
     private locationRepository: Repository<Location>,
 
-    private loyaltyRewardService: LoyaltyRewardService
+    private loyaltyRewardService: LoyaltyRewardService,
   ) {}
 
   async addHistoryEntry(historyEntry: Partial<History>): Promise<History> {
@@ -33,38 +37,54 @@ export class HistoryService {
   }
 
   async findHistoryByUser(userId: number): Promise<History[]> {
-    return this.historyRepository.find({ where: { user: { id: userId } }, relations: ['location'] });
+    return this.historyRepository.find({
+      where: { user: { id: userId } },
+      relations: ['location'],
+    });
   }
 
-  async create(userId: number, createHistoryDto: CreateHistoryDto): Promise<History> {
-    const user = await this.userRepository.findOne({ where: { id: userId }})
-    if(!user) throw new NotFoundException('User not found')
+  async create(
+    userId: number,
+    createHistoryDto: CreateHistoryDto,
+  ): Promise<History> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) throw new NotFoundException('User not found');
 
-    const location = await this.locationRepository.findOneById(createHistoryDto.locationId)
-    if(!location) throw new NotFoundException('Location not found')
+    const location = await this.locationRepository.findOneById(
+      createHistoryDto.locationId,
+    );
+    if (!location) throw new NotFoundException('Location not found');
 
     const historyPayload = new AddHistoryDto({
       date: createHistoryDto.date ? createHistoryDto.date : new Date(),
       user,
-      location
-    })
+      location,
+    });
 
-    const history = await this.historyRepository.create(historyPayload)
-    if(!history) throw new ConflictException('Failed to create history')
+    const history = await this.historyRepository.create(historyPayload);
+    if (!history) throw new ConflictException('Failed to create history');
 
-    const savedHistory = await this.historyRepository.save(history)
-    if(!savedHistory) throw new ConflictException('Failed to save history')
+    const savedHistory = await this.historyRepository.save(history);
+    if (!savedHistory) throw new ConflictException('Failed to save history');
 
-    const allUserHistory = await this.historyRepository.find({ where: { user } })
-    if(!allUserHistory) throw new ConflictException('Failed to fetch all user history')
+    const allUserHistory = await this.historyRepository.find({
+      where: { user },
+    });
+    if (!allUserHistory)
+      throw new ConflictException('Failed to fetch all user history');
 
     // Adding loyalty rewards for user
-    if(allUserHistory.length % LOYALTY_REWARD_GOAL === 0) {
-      const newLoyaltyReward = await this.loyaltyRewardService.create(new CreateLoyaltyRewardDto({ userId }))
+    if (allUserHistory.length % LOYALTY_REWARD_GOAL === 0) {
+      const newLoyaltyReward = await this.loyaltyRewardService.create(
+        new CreateLoyaltyRewardDto({ userId }),
+      );
 
-      console.log("Generated a new loyalty reward for the user!", newLoyaltyReward)
+      console.log(
+        'Generated a new loyalty reward for the user!',
+        newLoyaltyReward,
+      );
     }
 
-    return savedHistory
+    return savedHistory;
   }
 }

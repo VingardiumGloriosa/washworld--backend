@@ -1,4 +1,8 @@
-import { createParamDecorator, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import {
+  createParamDecorator,
+  ExecutionContext,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 require('dotenv').config();
 
@@ -14,8 +18,8 @@ export const UserId = createParamDecorator(
 
     const decoded = jwtService.decode(token) as { id: number };
 
-    if(!decoded.id) {
-        throw new UnauthorizedException('No token found');
+    if (!decoded.id) {
+      throw new UnauthorizedException('No token found');
     }
 
     return decoded.id;
