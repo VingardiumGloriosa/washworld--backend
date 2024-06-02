@@ -7,7 +7,7 @@ import { Membership } from '../../membership/entities/membership.entity';
 import { HistoryDto } from '../../history/dto/history.dto';
 import { User } from '../entities/user.entity';
 import { ResponseLoyaltyRewardDto } from '../../loyalty_reward/dto/response-loyalty_reward.dto';
-import { ResponseCarDto } from 'src/car/dto/response-car.dto';
+import { ResponseCarDto } from '../../car/dto/response-car.dto';
 
 export class ResponseUserDto {
 
