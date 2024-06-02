@@ -33,7 +33,6 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async getUser(@UserId() userId: number) {
     const user = await this.userService.findDetailedUser(userId);
-    console.log(user)
     return user;
   }
 

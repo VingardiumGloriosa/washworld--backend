@@ -6,6 +6,7 @@ import { Car } from './entities/car.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResponseCarDto } from './dto/response-car.dto';
 import { User } from '../user/entities/user.entity';
+import { ImageCompressionService } from 'src/image-compression/image-compression.service';
 
 @Injectable()
 export class CarService {
@@ -15,10 +16,15 @@ export class CarService {
     
     @InjectRepository(User)
     private userRepository: Repository<User>,
+
+    private readonly imageCompressionService: ImageCompressionService,
   ) {}
 
   async create(userId : number, createCarDto: CreateCarDto): Promise<Car> {
-    const car = this.carRepository.create(createCarDto);
+    const car = this.carRepository.create({
+      ...createCarDto,
+      photo: createCarDto.photo ? await this.imageCompressionService.compressImage(createCarDto.photo, 10) : null
+    });
     if(!car) throw Error('Failed to create car')
 
     const user = await this.userRepository.findOne({ where: {
@@ -38,7 +44,10 @@ export class CarService {
       throw new Error('Car not found');
     }
 
-    Object.assign(car, updateCarDto);
+    Object.assign(car, {
+      ...updateCarDto,
+      photo: updateCarDto.photo ? await this.imageCompressionService.compressImage(updateCarDto.photo, 10) : null
+    });
     return this.carRepository.save(car);
   }
 
