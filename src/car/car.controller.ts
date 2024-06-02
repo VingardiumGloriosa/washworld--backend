@@ -45,12 +45,13 @@ export class CarController {
     @UserId() userId : number,
     @Body() createCarDto: CreateCarDto,
   ) {
-    try {
+    // try {
       return await this.carService.create(userId, createCarDto);
       
-    } catch (error) {
-      throw new NotFoundException('User not found');
-    }
+    // } catch (error) {
+      // console.log(error)
+      // throw new NotFoundException('User not found');
+    // }
   }
 
   @Put(':carId')
