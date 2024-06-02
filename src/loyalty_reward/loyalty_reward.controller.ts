@@ -11,11 +11,11 @@ export class LoyaltyRewardController {
   @UseGuards(JwtAuthGuard)
   async toggleRewardStatus(
     @Param('rewardId') rewardId: string,
-    @Body() updateLoyaltyRewardStatusDto: UpdateLoyaltyRewardStatusDto
+    @Body() updateLoyaltyRewardStatusDto: UpdateLoyaltyRewardStatusDto,
   ) {
     return await this.loyaltyRewardsService.toggleRewardStatus(
       Number(rewardId),
-      updateLoyaltyRewardStatusDto
+      updateLoyaltyRewardStatusDto,
     );
   }
 }

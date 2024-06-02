@@ -12,22 +12,24 @@ export class CarService {
   constructor(
     @InjectRepository(Car)
     private carRepository: Repository<Car>,
-    
+
     @InjectRepository(User)
     private userRepository: Repository<User>,
   ) {}
 
-  async create(userId : number, createCarDto: CreateCarDto): Promise<Car> {
+  async create(userId: number, createCarDto: CreateCarDto): Promise<Car> {
     const car = this.carRepository.create(createCarDto);
-    if(!car) throw Error('Failed to create car')
+    if (!car) throw Error('Failed to create car');
 
-    const user = await this.userRepository.findOne({ where: {
-      id: userId 
-    }});
-    
-    if(!user) throw Error('User not found')
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+    });
 
-    car.user = user
+    if (!user) throw Error('User not found');
+
+    car.user = user;
 
     return this.carRepository.save(car);
   }

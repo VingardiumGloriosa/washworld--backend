@@ -33,7 +33,7 @@ require('dotenv').config();
         cli: {
           migrationsDir: 'src/migrations',
         },
-        synchronize: false
+        synchronize: false,
       }),
       inject: [ConfigService],
     }),
@@ -48,7 +48,7 @@ require('dotenv').config();
     DistancesModule,
     HistoryModule,
     DistancesModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [],
   providers: [],

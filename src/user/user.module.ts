@@ -12,12 +12,13 @@ require('dotenv').config();
 @Module({
   controllers: [UserController],
   providers: [UserService, JwtStrategy],
-  imports: [TypeOrmModule.forFeature([User]), 
+  imports: [
+    TypeOrmModule.forFeature([User]),
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '30d' }
-    })
+      signOptions: { expiresIn: '30d' },
+    }),
   ],
   exports: [TypeOrmModule.forFeature([User]), UserService],
 })

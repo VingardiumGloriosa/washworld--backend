@@ -10,7 +10,12 @@ import { UserModule } from '../user/user.module';
 @Module({
   controllers: [HistoryController],
   providers: [HistoryService],
-  imports: [TypeOrmModule.forFeature([History]), LoyaltyRewardModule, LocationModule, UserModule],
+  imports: [
+    TypeOrmModule.forFeature([History]),
+    LoyaltyRewardModule,
+    LocationModule,
+    UserModule,
+  ],
   exports: [TypeOrmModule.forFeature([History])],
 })
 export class HistoryModule {}

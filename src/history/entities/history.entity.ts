@@ -1,6 +1,12 @@
 import { Location } from '../../location/entities/location.entity';
 import { User } from '../../user/entities/user.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity('history')
 export class History {
@@ -10,11 +16,11 @@ export class History {
   @Column()
   date: Date;
 
-  @ManyToOne(() => User, user => user.history)
+  @ManyToOne(() => User, (user) => user.history)
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Location, location => location.history)
+  @ManyToOne(() => Location, (location) => location.history)
   @JoinColumn({ name: 'location_id' })
   location: Location;
 }

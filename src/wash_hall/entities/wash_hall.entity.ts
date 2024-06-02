@@ -16,7 +16,12 @@ export class WashHall {
   @JoinColumn({ name: 'location_id' })
   location: Location;
 
-  @Column({ type: 'timestamp', default: null, nullable: true, name: 'finish_time' })
+  @Column({
+    type: 'timestamp',
+    default: null,
+    nullable: true,
+    name: 'finish_time',
+  })
   finishTime?: Date | null;
 
   @Column({ type: 'boolean', default: false, name: 'is_out_of_service' })

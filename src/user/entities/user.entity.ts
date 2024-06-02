@@ -30,7 +30,9 @@ export class User {
   @Column({ type: 'text', name: 'full_name' })
   fullName: string;
 
-  @OneToOne(() => Membership, membership => membership.user, { nullable: true })
+  @OneToOne(() => Membership, (membership) => membership.user, {
+    nullable: true,
+  })
   @JoinColumn({ name: 'membership_id' })
   membership: Membership;
 
@@ -42,7 +44,7 @@ export class User {
   @JoinColumn({ name: 'loyalty_reward_id' })
   loyaltyRewards: Loyalty_Reward[];
 
-  @OneToMany(() => History, history => history.user)
+  @OneToMany(() => History, (history) => history.user)
   @JoinColumn({ name: 'history_id' })
   history: History[];
 }

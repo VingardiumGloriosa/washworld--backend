@@ -1,4 +1,4 @@
 export class DistanceResultDto {
-    id: number;
-    distance: number;
+  id: number;
+  distance: number;
 }

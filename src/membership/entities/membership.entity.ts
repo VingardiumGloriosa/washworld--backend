@@ -30,7 +30,7 @@ export class Membership {
   @Column()
   status: string;
 
-  @OneToOne(() => User, user => user.membership)
+  @OneToOne(() => User, (user) => user.membership)
   @JoinColumn({ name: 'user_id' })
   user: User;
 }
