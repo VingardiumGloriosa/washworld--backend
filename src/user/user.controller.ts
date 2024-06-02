@@ -39,7 +39,7 @@ export class UserController {
   @Get('home')
   @UseGuards(JwtAuthGuard)
   async getUserHome(@UserId() userId: number) {
-    const user = await this.userService.findDetailedUser(userId);
+    const user = await this.userService.findUserHome(userId);
     return {
       loyaltyRewards: user.loyaltyRewards,
       loyaltyRewardProgress: {

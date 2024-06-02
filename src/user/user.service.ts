@@ -59,17 +59,29 @@ export class UserService {
     await this.userRepository.remove(user);
   }
 
+  async findUserHome(userId: number): Promise<ResponseUserDto> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: [
+        'loyaltyRewards',
+        'loyaltyRewards.loyaltyRewardType',
+        'history', 
+        'history.location'
+      ]
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return new ResponseUserDto(user);
+  }
+
   async findDetailedUser(userId: number): Promise<ResponseUserDto> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
       relations: [
         'membership', 
         'membership.membershipType', 
-        'cars', 
-        'loyaltyRewards',
-        'loyaltyRewards.loyaltyRewardType',
-        'history', 
-        'history.location'
+        'cars',
       ]
     });
     if (!user) {
