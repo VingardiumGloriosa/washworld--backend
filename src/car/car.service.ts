@@ -76,6 +76,7 @@ export class CarService {
     }
 
     const carDto = new ResponseCarDto();
+    carDto.id = car.id;
     carDto.licensePlate = car.licensePlate;
 
     if (car.photo) {
