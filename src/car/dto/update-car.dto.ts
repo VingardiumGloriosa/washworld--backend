@@ -7,8 +7,8 @@ export class UpdateCarDto {
   userId?: number;
 
   @IsOptional()
-  @Type(() => Buffer)
-  photo?: Buffer;
+  @IsString()
+  photo?: string;
 
   @IsString()
   @IsOptional()

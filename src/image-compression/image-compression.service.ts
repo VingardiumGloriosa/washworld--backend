@@ -5,6 +5,7 @@ import * as sharp from 'sharp';
 export class ImageCompressionService {
   async compressImage(imageBuffer: Buffer, quality: number = 80, resize: { x: number, y: number } = { x: 240, y: 160 }): Promise<Buffer> {
     try {
+      await sharp(imageBuffer).metadata();
       const compressedBuffer = resize ?
           await sharp(imageBuffer).resize(resize.x, resize.y).jpeg({ quality }).toBuffer()
         :
