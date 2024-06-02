@@ -6,12 +6,13 @@ import { User } from './entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from '../jwt/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
+import { ImageCompressionService } from '../image-compression/image-compression.service';
 
 require('dotenv').config();
 
 @Module({
   controllers: [UserController],
-  providers: [UserService, JwtStrategy],
+  providers: [UserService, JwtStrategy, ImageCompressionService],
   imports: [
     TypeOrmModule.forFeature([User]),
     PassportModule,
@@ -20,6 +21,6 @@ require('dotenv').config();
       signOptions: { expiresIn: '30d' },
     }),
   ],
-  exports: [TypeOrmModule.forFeature([User]), UserService],
+  exports: [TypeOrmModule.forFeature([User]), UserService, ImageCompressionService],
 })
 export class UserModule {}

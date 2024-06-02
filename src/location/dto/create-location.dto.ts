@@ -3,8 +3,8 @@ import { IsOptional, IsString } from 'class-validator';
 
 export class CreateLocationDto {
   @IsOptional()
-  @Type(() => Buffer)
-  photo?: Buffer;
+  @IsString()
+  photo?: string;
 
   @IsString()
   name: string;

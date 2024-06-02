@@ -1,11 +1,5 @@
 import { Type } from 'class-transformer';
-import {
-  IsEmail,
-  IsString,
-  IsOptional,
-  IsNotEmpty,
-  IsNumber,
-} from 'class-validator';
+import { IsEmail, IsString, IsOptional, IsNotEmpty, IsNumber } from 'class-validator';
 import { Car } from '../../car/entities/car.entity';
 import { History } from '../../history/entities/history.entity';
 import { Loyalty_Reward } from '../../loyalty_reward/entities/loyalty_reward.entity';
@@ -16,10 +10,6 @@ import { ResponseLoyaltyRewardDto } from '../../loyalty_reward/dto/response-loya
 import { ResponseCarDto } from '../../car/dto/response-car.dto';
 
 export class ResponseUserDto {
-  constructor(user: User) {
-    if (!user) {
-      throw new Error(`User not found`);
-    }
 
     constructor (user : User) {
         if (!user) {
@@ -44,41 +34,32 @@ export class ResponseUserDto {
     @IsNotEmpty()
     id: Number
 
-    if (user.photo) {
-      const photoBase64 = user.photo.toString('base64');
-      this.photo = `data:image/jpeg;base64,${photoBase64}`;
-    }
-  }
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
 
-  @IsNumber()
-  @IsNotEmpty()
-  id: Number;
+    @IsString()
+    @IsNotEmpty()
+    password: string;
 
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
+    @IsString()
+    @IsNotEmpty()
+    fullName: string;
 
-  @IsString()
-  @IsNotEmpty()
-  password: string;
+    @IsOptional()
+    @IsString()
+    photo?: string | null = null;
+     
+    @IsOptional()
+    @Type(() => Membership)
+    membership: Membership | null = null;
 
     @IsNotEmpty()
     cars: ResponseCarDto[];
 
-  @IsOptional()
-  @IsString()
-  photo?: string | null = null;
+    @IsNotEmpty()
+    loyaltyRewards: ResponseLoyaltyRewardDto[];
 
-  @IsOptional()
-  @Type(() => Membership)
-  membership: Membership | null = null;
-
-  @IsNotEmpty()
-  cars: Car[];
-
-  @IsNotEmpty()
-  loyaltyRewards: ResponseLoyaltyRewardDto[];
-
-  @IsNotEmpty()
-  history: HistoryDto[];
+    @IsNotEmpty()
+    history: HistoryDto[];
 }
