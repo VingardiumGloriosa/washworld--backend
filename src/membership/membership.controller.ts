@@ -33,12 +33,13 @@ export class MembershipController {
     }
   }
 
-  @Delete(':membershipId')
+  @Delete()
   @UseGuards(JwtAuthGuard)
-  async deleteMembership(@Param('membershipId') membershipId: string) {
+  async deleteMembership(@UserId() userId: number) {
     try {
-      return await this.membershipsService.remove(Number(membershipId));
+      return await this.membershipsService.remove(userId);
     } catch (error) {
+      console.log(error.message)
       throw new HttpException('Membership not found', HttpStatus.NOT_FOUND);
     }
   }
