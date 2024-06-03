@@ -13,14 +13,18 @@ export class LocationService {
     @InjectRepository(Location)
     private locationRepository: Repository<Location>,
     private readonly imageCompressionService: ImageCompressionService,
-  ) {}    
-
+  ) {}
 
   async create(createLocationDto: CreateLocationDto): Promise<Location> {
     const location = this.locationRepository.create({
       ...createLocationDto,
-      photo: createLocationDto.photo ? await this.imageCompressionService.compressImage(Buffer.from(createLocationDto.photo, "base64"), 50) : null
-  });
+      photo: createLocationDto.photo
+        ? await this.imageCompressionService.compressImage(
+            Buffer.from(createLocationDto.photo, 'base64'),
+            50,
+          )
+        : null,
+    });
     const created = await this.locationRepository.save(location);
 
     return created;
@@ -47,7 +51,12 @@ export class LocationService {
   ): Promise<ResponseLocationDto> {
     await this.locationRepository.update(id, {
       ...updateLocationDto,
-      photo: updateLocationDto.photo ? await this.imageCompressionService.compressImage(Buffer.from(updateLocationDto.photo, "base64"), 50) : null
+      photo: updateLocationDto.photo
+        ? await this.imageCompressionService.compressImage(
+            Buffer.from(updateLocationDto.photo, 'base64'),
+            50,
+          )
+        : null,
     });
     const updatedLocation = await this.locationRepository.findOneBy({ id });
     if (!updatedLocation) {

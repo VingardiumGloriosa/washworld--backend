@@ -44,7 +44,13 @@ export class UserService {
 
     const newUser = this.userRepository.create({
       ...createUserDto,
-      photo: createUserDto.photo ? await this.imageCompressionService.compressImage(Buffer.from(createUserDto.photo, "base64"), 50, { x: 300, y: 300}) : null
+      photo: createUserDto.photo
+        ? await this.imageCompressionService.compressImage(
+            Buffer.from(createUserDto.photo, 'base64'),
+            50,
+            { x: 300, y: 300 },
+          )
+        : null,
     });
 
     newUser.password = bcrypt.hashSync(newUser.password, 10);
@@ -59,7 +65,13 @@ export class UserService {
     const user = await this.userRepository.preload({
       id: userId,
       ...updateUserDto,
-      photo: updateUserDto.photo ? await this.imageCompressionService.compressImage(Buffer.from(updateUserDto.photo, "base64"), 50, { x: 300, y: 300}) : null
+      photo: updateUserDto.photo
+        ? await this.imageCompressionService.compressImage(
+            Buffer.from(updateUserDto.photo, 'base64'),
+            50,
+            { x: 300, y: 300 },
+          )
+        : null,
     });
     if (!user) {
       throw new NotFoundException('User not found');
@@ -155,7 +167,8 @@ export class UserService {
       throw new NotFoundException('User not found');
     }
 
-    user.photo = Buffer.from(updateProfilePhotoDto.photo, 'base64');
+    const { photo } = updateProfilePhotoDto;
+    user.photo = Buffer.from(photo, 'base64');
     const updated = await this.userRepository.save(user);
     return new ResponseUserDto(updated);
   }

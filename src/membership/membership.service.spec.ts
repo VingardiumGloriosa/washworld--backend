@@ -33,14 +33,12 @@ describe('MembershipService', () => {
 
     service = module.get<MembershipService>(MembershipService);
     membershipRepository = module.get<Repository<Membership>>(
-      getRepositoryToken(Membership)
+      getRepositoryToken(Membership),
     );
     membershipTypeRepository = module.get<Repository<Membership_Type>>(
-      getRepositoryToken(Membership_Type)
+      getRepositoryToken(Membership_Type),
     );
-    userRepository = module.get<Repository<User>>(
-      getRepositoryToken(User)
-    );
+    userRepository = module.get<Repository<User>>(getRepositoryToken(User));
   });
 
   it('should be defined', () => {
@@ -60,7 +58,10 @@ describe('MembershipService', () => {
 
       const saveMock = jest.fn();
       //membershipRepository.create.mockReturnValue({ ...user, ...membershipType });
-      membershipRepository.save = saveMock.mockResolvedValue({ ...user, ...membershipType });
+      membershipRepository.save = saveMock.mockResolvedValue({
+        ...user,
+        ...membershipType,
+      });
 
       const result = await service.create(userId, membershipTypeId);
 
@@ -74,9 +75,13 @@ describe('MembershipService', () => {
       const membershipTypeId = 1;
 
       userRepository.findOneBy = jest.fn().mockResolvedValue(undefined);
-      membershipTypeRepository.findOneBy = jest.fn().mockResolvedValue(undefined);
+      membershipTypeRepository.findOneBy = jest
+        .fn()
+        .mockResolvedValue(undefined);
 
-      await expect(service.create(userId, membershipTypeId)).rejects.toThrowError('User or membership type not found');
+      await expect(
+        service.create(userId, membershipTypeId),
+      ).rejects.toThrowError('User or membership type not found');
     });
   });
 
@@ -99,7 +104,9 @@ describe('MembershipService', () => {
 
       membershipRepository.findOneBy = jest.fn().mockResolvedValue(undefined);
 
-      await expect(service.remove(membershipId)).rejects.toThrowError('Membership not found');
+      await expect(service.remove(membershipId)).rejects.toThrowError(
+        'Membership not found',
+      );
     });
   });
 });

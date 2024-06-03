@@ -31,7 +31,11 @@ describe('UserController (e2e)', () => {
   it('should create a new user', () => {
     return request(app.getHttpServer())
       .post('/users')
-      .send({ email: 'test13@example.com', password: 'password', fullName: 'Test User' })
+      .send({
+        email: 'test13@example.com',
+        password: 'password',
+        fullName: 'Test User',
+      })
       .expect(201);
   });
 
@@ -41,7 +45,6 @@ describe('UserController (e2e)', () => {
       .set('Authorization', `Bearer ${authToken}`)
       .expect(200);
   });
-
 });
 
 describe('MembershipController (e2e)', () => {
@@ -168,7 +171,4 @@ describe('LocationController (e2e)', () => {
       .set('Authorization', `Bearer ${authToken}`)
       .expect(200);
   });
-
 });
-
-

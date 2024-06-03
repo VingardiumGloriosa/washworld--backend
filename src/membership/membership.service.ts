@@ -1,4 +1,10 @@
-import { ConflictException, HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Membership } from './entities/membership.entity';
 import { Repository } from 'typeorm';
@@ -17,7 +23,10 @@ export class MembershipService {
     private userRepository: Repository<User>,
   ) {}
 
-  async create(userId: number, membershipTypeId: number): Promise<ResponseMembershipDto> {
+  async create(
+    userId: number,
+    membershipTypeId: number,
+  ): Promise<ResponseMembershipDto> {
     const user = await this.userRepository.findOneBy({ id: userId });
     const membershipType = await this.membershipTypeRepository.findOneBy({
       id: membershipTypeId,
@@ -39,9 +48,9 @@ export class MembershipService {
     });
 
     const savedMembership = await this.membershipRepository.save(membership);
-    if(!savedMembership) throw new ConflictException()
+    if (!savedMembership) throw new ConflictException();
 
-    return new ResponseMembershipDto(savedMembership)
+    return new ResponseMembershipDto(savedMembership);
   }
 
   async remove(userId: number): Promise<boolean> {
@@ -50,7 +59,9 @@ export class MembershipService {
       throw new NotFoundException();
     }
 
-    const membership = await this.membershipRepository.findOne({ where: { user }});
+    const membership = await this.membershipRepository.findOne({
+      where: { user },
+    });
     return !!(await this.membershipRepository.remove(membership));
   }
 }

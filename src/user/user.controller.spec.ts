@@ -30,8 +30,17 @@ describe('UserController', () => {
         password: 'password',
         fullName: 'Test User',
       };
-      const expectedResult = { id: 1, email: '', password: '', fullName: "", photo: '', membership: null,
-      cars: [], loyaltyRewards: [], history: [] };
+      const expectedResult = {
+        id: 1,
+        email: '',
+        password: '',
+        fullName: '',
+        photo: '',
+        membership: null,
+        cars: [],
+        loyaltyRewards: [],
+        history: [],
+      };
       jest.spyOn(userService, 'create').mockResolvedValueOnce(expectedResult);
 
       const result = await controller.signUp(createUserDto);
@@ -69,8 +78,19 @@ describe('UserController', () => {
   describe('getUser', () => {
     it('should return detailed user information', async () => {
       const userId = 1;
-      const detailedUser = { id: userId, fullName: 'Test User', email: "", password: "", membership: null, cars: [], loyaltyRewards: [], history: [] };
-      jest.spyOn(userService, 'findDetailedUser').mockResolvedValueOnce(detailedUser);
+      const detailedUser = {
+        id: userId,
+        fullName: 'Test User',
+        email: '',
+        password: '',
+        membership: null,
+        cars: [],
+        loyaltyRewards: [],
+        history: [],
+      };
+      jest
+        .spyOn(userService, 'findDetailedUser')
+        .mockResolvedValueOnce(detailedUser);
 
       const result = await controller.getUser(userId);
 
@@ -90,7 +110,7 @@ describe('UserController', () => {
         password: '',
         fullName: '',
         membership: null,
-        cars: []
+        cars: [],
       };
       jest.spyOn(userService, 'findUserHome').mockResolvedValueOnce(userHome);
 
@@ -106,14 +126,27 @@ describe('UserController', () => {
       const updateProfilePhotoDto: UpdateProfilePhotoDto = {
         photo: 'base64string',
         readonly: undefined,
-        
       };
-      const expectedResult = { id: userId, photo: 'base64string', email: '', password: '', fullName: '', membership: null,
-                             cars: [], loyaltyRewards: [], history: []};
-      jest.spyOn(userService, 'updateProfilePhoto').mockResolvedValueOnce(expectedResult);
-  
-      const result = await controller.updateProfilePhoto(userId, updateProfilePhotoDto);
-  
+      const expectedResult = {
+        id: userId,
+        photo: 'base64string',
+        email: '',
+        password: '',
+        fullName: '',
+        membership: null,
+        cars: [],
+        loyaltyRewards: [],
+        history: [],
+      };
+      jest
+        .spyOn(userService, 'updateProfilePhoto')
+        .mockResolvedValueOnce(expectedResult);
+
+      const result = await controller.updateProfilePhoto(
+        userId,
+        updateProfilePhotoDto,
+      );
+
       expect(result).toEqual(expectedResult);
     });
   });

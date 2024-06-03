@@ -28,9 +28,9 @@ describe('CarController', () => {
         },
       ],
     })
-    .overrideGuard(JwtAuthGuard)
-    .useValue({ canActivate: jest.fn(() => true) })
-    .compile();
+      .overrideGuard(JwtAuthGuard)
+      .useValue({ canActivate: jest.fn(() => true) })
+      .compile();
 
     controller = module.get<CarController>(CarController);
     carService = module.get<CarService>(CarService);
@@ -43,7 +43,9 @@ describe('CarController', () => {
   describe('getAllCars', () => {
     it('should return an array of cars', async () => {
       const userId = 1;
-      const result = [{ id: 1, licensePlate: 'ABC123', photo: null, user: { id: userId } }];
+      const result = [
+        { id: 1, licensePlate: 'ABC123', photo: null, user: { id: userId } },
+      ];
       jest.spyOn(carService, 'findAllCarsByUserId').mockResolvedValue(result);
 
       expect(await controller.getAllCars(userId)).toBe(result);
@@ -55,11 +57,19 @@ describe('CarController', () => {
     it('should return a single car', async () => {
       const userId = 1;
       const carId = '1';
-      const result = { id: 1, licensePlate: 'ABC123', photo: null, user: { id: userId } };
+      const result = {
+        id: 1,
+        licensePlate: 'ABC123',
+        photo: null,
+        user: { id: userId },
+      };
       jest.spyOn(carService, 'findCarByUser').mockResolvedValue(result);
 
       expect(await controller.getCar(userId, carId)).toBe(result);
-      expect(carService.findCarByUser).toHaveBeenCalledWith(userId, Number(carId));
+      expect(carService.findCarByUser).toHaveBeenCalledWith(
+        userId,
+        Number(carId),
+      );
     });
   });
 
@@ -83,15 +93,22 @@ describe('CarController', () => {
       jest.spyOn(carService, 'update').mockResolvedValue(result);
 
       expect(await controller.updateCar(carId, updateCarDto)).toBe(result);
-      expect(carService.update).toHaveBeenCalledWith(Number(carId), updateCarDto);
+      expect(carService.update).toHaveBeenCalledWith(
+        Number(carId),
+        updateCarDto,
+      );
     });
 
     it('should throw NotFoundException if car not found', async () => {
       const carId = '1';
       const updateCarDto: UpdateCarDto = { licensePlate: 'DEF456', photo: '' };
-      jest.spyOn(carService, 'update').mockRejectedValue(new Error('Car not found'));
+      jest
+        .spyOn(carService, 'update')
+        .mockRejectedValue(new Error('Car not found'));
 
-      await expect(controller.updateCar(carId, updateCarDto)).rejects.toThrow(NotFoundException);
+      await expect(controller.updateCar(carId, updateCarDto)).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -106,9 +123,13 @@ describe('CarController', () => {
 
     it('should throw NotFoundException if car not found', async () => {
       const carId = '1';
-      jest.spyOn(carService, 'remove').mockRejectedValue(new Error('Car not found'));
+      jest
+        .spyOn(carService, 'remove')
+        .mockRejectedValue(new Error('Car not found'));
 
-      await expect(controller.deleteCar(carId)).rejects.toThrow(NotFoundException);
+      await expect(controller.deleteCar(carId)).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });

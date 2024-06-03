@@ -50,7 +50,9 @@ describe('LoyaltyRewardTypeController', () => {
 
     it('should throw NotFoundException if loyalty reward type is not found', async () => {
       const id = '999';
-      jest.spyOn(service, 'findOne').mockRejectedValueOnce(new NotFoundException());
+      jest
+        .spyOn(service, 'findOne')
+        .mockRejectedValueOnce(new NotFoundException());
 
       await expect(controller.findOne(id)).rejects.toThrow(NotFoundException);
     });

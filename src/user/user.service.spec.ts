@@ -42,7 +42,7 @@ describe('UserService', () => {
       const userId = 1;
       const updateProfilePhotoDto: UpdateProfilePhotoDto = {
         photo: 'base64string',
-        readonly: undefined
+        readonly: undefined,
       };
       const user = new User();
       user.id = userId;
@@ -68,7 +68,7 @@ describe('UserService', () => {
       const userId = 1;
       const updateProfilePhotoDto: UpdateProfilePhotoDto = {
         photo: 'base64string',
-        readonly: undefined
+        readonly: undefined,
       };
 
       mockUserRepository.findOneBy.mockResolvedValue(null);

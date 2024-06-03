@@ -20,10 +20,18 @@ export class CarService {
     private readonly imageCompressionService: ImageCompressionService,
   ) {}
 
-  async create(userId : number, createCarDto: CreateCarDto): Promise<ResponseCarDto> {
+  async create(
+    userId: number,
+    createCarDto: CreateCarDto,
+  ): Promise<ResponseCarDto> {
     const car = this.carRepository.create({
       ...createCarDto,
-      photo: createCarDto.photo ? await this.imageCompressionService.compressImage(Buffer.from(createCarDto.photo, "base64"), 50) : null
+      photo: createCarDto.photo
+        ? await this.imageCompressionService.compressImage(
+            Buffer.from(createCarDto.photo, 'base64'),
+            50,
+          )
+        : null,
     });
     if (!car) throw Error('Failed to create car');
 
@@ -39,10 +47,13 @@ export class CarService {
 
     const savedCar = this.carRepository.save(car);
 
-    return new ResponseCarDto(savedCar)
+    return new ResponseCarDto(savedCar);
   }
 
-  async update(carId: number, updateCarDto: UpdateCarDto): Promise<ResponseCarDto> {
+  async update(
+    carId: number,
+    updateCarDto: UpdateCarDto,
+  ): Promise<ResponseCarDto> {
     const car = await this.carRepository.findOne({ where: { id: carId } });
     if (!car) {
       throw new Error('Car not found');
@@ -50,11 +61,16 @@ export class CarService {
 
     Object.assign(car, {
       ...updateCarDto,
-      photo: updateCarDto.photo ? await this.imageCompressionService.compressImage(Buffer.from(updateCarDto.photo, "base64"), 50) : null
+      photo: updateCarDto.photo
+        ? await this.imageCompressionService.compressImage(
+            Buffer.from(updateCarDto.photo, 'base64'),
+            50,
+          )
+        : null,
     });
     const savedCar = this.carRepository.save(car);
 
-    return new ResponseCarDto(savedCar)
+    return new ResponseCarDto(savedCar);
   }
 
   async remove(carId: number): Promise<void> {

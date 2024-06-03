@@ -11,6 +11,10 @@ import { ImageCompressionService } from '../image-compression/image-compression.
   controllers: [LocationController],
   providers: [LocationService, ImageCompressionService],
   imports: [TypeOrmModule.forFeature([Location])],
-  exports: [LocationService, TypeOrmModule.forFeature([Location]), ImageCompressionService],
+  exports: [
+    LocationService,
+    TypeOrmModule.forFeature([Location]),
+    ImageCompressionService,
+  ],
 })
 export class LocationModule {}

@@ -38,7 +38,9 @@ describe('CarService', () => {
     service = module.get<CarService>(CarService);
     carRepository = module.get<Repository<Car>>(getRepositoryToken(Car));
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
-    imageCompressionService = module.get<ImageCompressionService>(ImageCompressionService);
+    imageCompressionService = module.get<ImageCompressionService>(
+      ImageCompressionService,
+    );
   });
 
   it('should be defined', () => {
@@ -57,8 +59,15 @@ describe('CarService', () => {
 
       const result = await service.create(userId, createCarDto);
 
-      expect(result).toEqual({ id: 1, licensePlate: 'ABC123', photo: null, user });
-      expect(userRepository.findOne).toHaveBeenCalledWith({ where: { id: userId } });
+      expect(result).toEqual({
+        id: 1,
+        licensePlate: 'ABC123',
+        photo: null,
+        user,
+      });
+      expect(userRepository.findOne).toHaveBeenCalledWith({
+        where: { id: userId },
+      });
       expect(carRepository.create).toHaveBeenCalledWith({
         ...createCarDto,
         photo: null,
@@ -72,7 +81,9 @@ describe('CarService', () => {
 
       jest.spyOn(userRepository, 'findOne').mockResolvedValue(null);
 
-      await expect(service.create(userId, createCarDto)).rejects.toThrow('User not found');
+      await expect(service.create(userId, createCarDto)).rejects.toThrow(
+        'User not found',
+      );
     });
   });
 
@@ -89,8 +100,14 @@ describe('CarService', () => {
       const result = await service.update(carId, updateCarDto);
 
       expect(result).toEqual({ id: carId, ...updateCarDto });
-      expect(carRepository.findOne).toHaveBeenCalledWith({ where: { id: carId } });
-      expect(carRepository.save).toHaveBeenCalledWith({ ...car, ...updateCarDto, photo: null });
+      expect(carRepository.findOne).toHaveBeenCalledWith({
+        where: { id: carId },
+      });
+      expect(carRepository.save).toHaveBeenCalledWith({
+        ...car,
+        ...updateCarDto,
+        photo: null,
+      });
     });
 
     it('should throw an error if car is not found', async () => {
@@ -99,7 +116,9 @@ describe('CarService', () => {
 
       jest.spyOn(carRepository, 'findOne').mockResolvedValue(null);
 
-      await expect(service.update(carId, updateCarDto)).rejects.toThrow('Car not found');
+      await expect(service.update(carId, updateCarDto)).rejects.toThrow(
+        'Car not found',
+      );
     });
   });
 
@@ -121,7 +140,9 @@ describe('CarService', () => {
 
       jest.spyOn(carRepository, 'delete').mockResolvedValue(deleteResult);
 
-      await expect(service.remove(carId)).rejects.toThrow('Car not found or not removed');
+      await expect(service.remove(carId)).rejects.toThrow(
+        'Car not found or not removed',
+      );
     });
   });
 
@@ -138,7 +159,12 @@ describe('CarService', () => {
 
       const result = await service.findCarByUser(userId, carId);
 
-      expect(result).toEqual({ id: carId, licensePlate: car.licensePlate, photo: null, user: car.user });
+      expect(result).toEqual({
+        id: carId,
+        licensePlate: car.licensePlate,
+        photo: null,
+        user: car.user,
+      });
       expect(carRepository.findOne).toHaveBeenCalledWith({
         where: {
           id: carId,
@@ -171,7 +197,9 @@ describe('CarService', () => {
       const result = await service.findAllCarsByUserId(userId);
 
       expect(result).toEqual(cars);
-      expect(carRepository.find).toHaveBeenCalledWith({ where: { user: { id: userId } } });
+      expect(carRepository.find).toHaveBeenCalledWith({
+        where: { user: { id: userId } },
+      });
     });
   });
 });

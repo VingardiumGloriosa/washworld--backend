@@ -1,5 +1,11 @@
 import { Type } from 'class-transformer';
-import { IsEmail, IsString, IsOptional, IsNotEmpty, IsNumber } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  IsOptional,
+  IsNotEmpty,
+  IsNumber,
+} from 'class-validator';
 import { Car } from '../../car/entities/car.entity';
 import { History } from '../../history/entities/history.entity';
 import { Loyalty_Reward } from '../../loyalty_reward/entities/loyalty_reward.entity';
@@ -10,56 +16,57 @@ import { ResponseLoyaltyRewardDto } from '../../loyalty_reward/dto/response-loya
 import { ResponseCarDto } from '../../car/dto/response-car.dto';
 
 export class ResponseUserDto {
+  constructor(user: User) {
+    if (!user) {
+      throw new Error(`User not found`);
+    }
 
-    constructor (user : User) {
-        if (!user) {
-          throw new Error(`User not found`);
-        }
-    
-        this.id = user.id
-        this.email = user.email
-        this.fullName = user.fullName
-        this.membership = user.membership
-        this.cars = user.cars?.map(c => new ResponseCarDto(c))
-        this.loyaltyRewards = user.loyaltyRewards?.map(lr => new ResponseLoyaltyRewardDto(lr)) || []
-        this.history = user.history?.map(history => new HistoryDto(history)) || []
-    
-        if (user.photo) {
-          const photoBase64 = user.photo.toString('base64');
-          this.photo = `data:image/jpeg;base64,${photoBase64}`;
-        }
-      }
-  
-    @IsNumber()
-    @IsNotEmpty()
-    id: Number
+    this.id = user.id;
+    this.email = user.email;
+    this.fullName = user.fullName;
+    this.membership = user.membership;
+    this.cars = user.cars?.map((c) => new ResponseCarDto(c));
+    this.loyaltyRewards =
+      user.loyaltyRewards?.map((lr) => new ResponseLoyaltyRewardDto(lr)) || [];
+    this.history =
+      user.history?.map((history) => new HistoryDto(history)) || [];
 
-    @IsEmail()
-    @IsNotEmpty()
-    email: string;
+    if (user.photo) {
+      const photoBase64 = user.photo.toString('base64');
+      this.photo = `data:image/jpeg;base64,${photoBase64}`;
+    }
+  }
 
-    @IsString()
-    @IsNotEmpty()
-    password: string;
+  @IsNumber()
+  @IsNotEmpty()
+  id: Number;
 
-    @IsString()
-    @IsNotEmpty()
-    fullName: string;
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
 
-    @IsOptional()
-    @IsString()
-    photo?: string | null = null;
-     
-    @IsOptional()
-    @Type(() => Membership)
-    membership: Membership | null = null;
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 
-    @IsNotEmpty()
-    cars: ResponseCarDto[];
+  @IsString()
+  @IsNotEmpty()
+  fullName: string;
 
-    @IsNotEmpty()
-    loyaltyRewards: ResponseLoyaltyRewardDto[];
+  @IsOptional()
+  @IsString()
+  photo?: string | null = null;
 
-    @IsNotEmpty()
-    history: HistoryDto[];
+  @IsOptional()
+  @Type(() => Membership)
+  membership: Membership | null = null;
+
+  @IsNotEmpty()
+  cars: ResponseCarDto[];
+
+  @IsNotEmpty()
+  loyaltyRewards: ResponseLoyaltyRewardDto[];
+
+  @IsNotEmpty()
+  history: HistoryDto[];
 }

@@ -21,6 +21,10 @@ require('dotenv').config();
       signOptions: { expiresIn: '30d' },
     }),
   ],
-  exports: [TypeOrmModule.forFeature([User]), UserService, ImageCompressionService],
+  exports: [
+    TypeOrmModule.forFeature([User]),
+    UserService,
+    ImageCompressionService,
+  ],
 })
 export class UserModule {}
