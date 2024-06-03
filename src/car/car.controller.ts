@@ -42,13 +42,7 @@ export class CarController {
   @UseInterceptors(FileInterceptor('file'))
   @HttpCode(HttpStatus.CREATED)
   async addCar(@UserId() userId: number, @Body() createCarDto: CreateCarDto) {
-    // try {
     return await this.carService.create(userId, createCarDto);
-
-    // } catch (error) {
-    // console.log(error)
-    // throw new NotFoundException('User not found');
-    // }
   }
 
   @Put(':carId')

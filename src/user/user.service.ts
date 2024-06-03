@@ -15,7 +15,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from '../jwt/jwt.interface';
 import { UpdateProfilePhotoDto } from './dto/update-profile-photo.dto';
-import { ImageCompressionService } from 'src/image-compression/image-compression.service';
+import { ImageCompressionService } from '../image-compression/image-compression.service';
 
 @Injectable()
 export class UserService {

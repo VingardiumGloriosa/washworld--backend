@@ -3,6 +3,7 @@ import { WashHallController } from './wash_hall.controller';
 import { WashHallService } from './wash_hall.service';
 import { CreateWashHallDto } from './dto/create-wash_hall.dto';
 import { UpdateWashHallDto } from './dto/update-wash_hall.dto';
+import { NotFoundException } from '@nestjs/common';
 
 describe('WashHallController', () => {
   let controller: WashHallController;
@@ -78,6 +79,13 @@ describe('WashHallController', () => {
 
       expect(mockWashHallService.findOne).toHaveBeenCalledWith(id);
       expect(result).toEqual(washHall);
+    });
+
+    it('should throw a NotFoundException if wash hall is not found', async () => {
+      const id = 1;
+      mockWashHallService.findOne.mockResolvedValue(null);
+
+      await expect(controller.findOne(id)).rejects.toThrow(NotFoundException);
     });
   });
 

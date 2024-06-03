@@ -5,7 +5,7 @@ import { Location } from './entities/location.entity';
 import { CreateLocationDto } from './dto/create-location.dto';
 import { UpdateLocationDto } from './dto/update-location.dto';
 import { ResponseLocationDto } from './dto/response-location.dto';
-import { ImageCompressionService } from 'src/image-compression/image-compression.service';
+import { ImageCompressionService } from '../image-compression/image-compression.service';
 
 @Injectable()
 export class LocationService {

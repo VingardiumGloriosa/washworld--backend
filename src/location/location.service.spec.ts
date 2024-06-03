@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { LocationService } from './location.service';
 import { Location } from './entities/location.entity';
 import { CreateLocationDto } from './dto/create-location.dto';
+import { UpdateLocationDto } from './dto/update-location.dto';
 import { NotFoundException } from '@nestjs/common';
 
 describe('LocationService', () => {
@@ -14,7 +15,7 @@ describe('LocationService', () => {
     create: jest.fn(),
     save: jest.fn(),
     find: jest.fn(),
-    findOneBy: jest.fn(),
+    findOne: jest.fn(),
     update: jest.fn(),
     delete: jest.fn(),
   };
@@ -77,17 +78,17 @@ describe('LocationService', () => {
     it('should return a single location', async () => {
       const id = 1;
       const location = { id, name: 'Test Location' };
-      mockLocationRepository.findOneBy.mockResolvedValue(location);
+      mockLocationRepository.findOne.mockResolvedValue(location);
 
       const result = await service.findOne(id);
 
-      expect(mockLocationRepository.findOneBy).toHaveBeenCalledWith({ id });
+      expect(mockLocationRepository.findOne).toHaveBeenCalledWith(id);
       expect(result).toEqual(location);
     });
 
     it('should throw a NotFoundException if location is not found', async () => {
       const id = 1;
-      mockLocationRepository.findOneBy.mockResolvedValue(null);
+      mockLocationRepository.findOne.mockResolvedValue(null);
 
       await expect(service.findOne(id)).rejects.toThrow(NotFoundException);
     });
@@ -96,11 +97,11 @@ describe('LocationService', () => {
   describe('update', () => {
     it('should update a location', async () => {
       const id = 1;
-      const updateLocationDto = { name: 'Updated Location' };
+      const updateLocationDto: UpdateLocationDto = { name: 'Updated Location' };
       const location = { id, ...updateLocationDto };
 
       mockLocationRepository.update.mockResolvedValue({ affected: 1 });
-      mockLocationRepository.findOneBy.mockResolvedValue(location);
+      mockLocationRepository.findOne.mockResolvedValue(location);
 
       const result = await service.update(id, updateLocationDto);
 
