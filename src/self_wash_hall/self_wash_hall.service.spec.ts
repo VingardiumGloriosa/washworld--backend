@@ -1,4 +1,3 @@
-// ../self-wash-hall/self-wash-hall.service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -10,7 +9,8 @@ import { NotFoundException } from '@nestjs/common';
 
 describe('SelfWashHallService', () => {
   let service: SelfWashHallService;
-  let repository: Repository<SelfWashHall>;
+  let selfWashHallRepository: Repository<SelfWashHall>;
+  let locationService: LocationService;
 
   const mockSelfWashHallRepository = {
     create: jest.fn(),
@@ -41,9 +41,10 @@ describe('SelfWashHallService', () => {
     }).compile();
 
     service = module.get<SelfWashHallService>(SelfWashHallService);
-    repository = module.get<Repository<SelfWashHall>>(
+    selfWashHallRepository = module.get<Repository<SelfWashHall>>(
       getRepositoryToken(SelfWashHall),
     );
+    locationService = module.get<LocationService>(LocationService);
   });
 
   it('should be defined', () => {
@@ -122,7 +123,7 @@ describe('SelfWashHallService', () => {
     it('should update a self wash hall', async () => {
       const id = 1;
       const updateSelfWashHallDto = { isInUse: true };
-      const selfWashHall = { id, isInUse: true, is_out_of_service: false };
+      const selfWashHall = { id, isInUse: true, isOutOfService: false };
 
       mockSelfWashHallRepository.update.mockResolvedValue({ affected: 1 });
       mockSelfWashHallRepository.findOne.mockResolvedValue(selfWashHall);

@@ -6,7 +6,7 @@ import { Car } from './entities/car.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResponseCarDto } from './dto/response-car.dto';
 import { User } from '../user/entities/user.entity';
-import { ImageCompressionService } from 'src/image-compression/image-compression.service';
+import { ImageCompressionService } from '../image-compression/image-compression.service';
 
 @Injectable()
 export class CarService {

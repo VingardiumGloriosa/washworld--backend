@@ -4,7 +4,7 @@ import { CarController } from './car.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Car } from './entities/car.entity';
 import { UserModule } from '../user/user.module';
-import { ImageCompressionService } from 'src/image-compression/image-compression.service';
+import { ImageCompressionService } from '../image-compression/image-compression.service';
 
 @Module({
   controllers: [CarController],
